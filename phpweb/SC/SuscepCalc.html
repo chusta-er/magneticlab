@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Susceptibility Calculator</title>
+<link href="SuscepCalc.css" title="text/css" rel="stylesheet" />
+<link href="Menu.css" title="text/css" rel="stylesheet" />
+<script type="text/javascript" src="SuscepCalc.js"></script>
+</head>
+<body onload="restaurar()">
+    <div id="Contenido" style="margin:20px 80px;">
+    <h1 align="center">LABORATORIO DE MAGNETISMO ESPACIAL&emsp;<a href="../Index.html"><img height="100" width="100" src="../Images/logo-inta.png" /></a></h1>
+    <br />
+        <div class="navbar">
+			<a href="../CMT/CMT.html">Campo Magn&eacute;tico Terrestre</a>
+			<a href="../EM/EM.html">Ensayos Magn&eacute;ticos</a>
+			<a href="../PID/PID.html">Proyectos I+D</a>
+            <a class="active" href="../SM/SM.html">Susceptibilidad Magn&eacute;tica</a>
+		</div>
+    <br />
+    <br />
+    <div id="titulo">
+    	<h1>Calculadora de Susceptibilidad</h1>
+    </div>
+    <h2>Seleccione un Cuerpo Celeste</h2>
+    <div id="celestial">
+    	<input class="btn btierra" id="bt_tierra" type="button" value="Tierra" onclick="bt_tierra()" />
+        <input class="btn bluna" id="bt_luna" type="button" value="Luna" onclick="bt_luna()" />
+        <input class="btn bmarte" id="bt_marte" type="button" value="Marte" onclick="bt_marte()" />
+    </div>
+    <h2>Seleccione el Tipo de Roca y pulse Continuar</h2>
+    <div id="rock">
+		<select id="rtierra" list="rocks">
+	        		<option value="Basalt plataform lavas">Basalt plataform lavas</option>
+	            	<option value="Basalt2">Basalt2</option>
+	           		<option value="Island Arc Basalt">Island Arc Basalt</option>
+	           		<option value="Cont. Marg. Basalt">Cont. Marg. Basalt</option>
+        </select>
+		<select id="rluna" list="rockm">
+	        		<option value="Basalt Type A">Basalt Type A</option>
+	            	<option value="Gabro Type B">Gabro Type B</option>
+	           		<option value="Anorthosite">Anorthosite</option>
+	           		<option value="Dunite">Dunite</option>
+        </select>
+		<select id="rmarte" list="rockma">
+	        		<option value="Olivine Clinopyroxenite">Olivine Clinopyroxenite</option>
+	            	<option value="Gabro">Gabro</option>
+	           		<option value="Basalt">Basalt</option>
+	           		<option value="Lherzolite">Lherzolite</option>
+					<option value="Nakhla">Nakhla</option>
+					<option value="NWA 817">NWA 817</option>
+					<option value="Shergotty">Shergotty</option>
+					<option value="Zagami">Zagami</option>
+					<option value="EETA79001B">EETA79001B</option>
+					<option value="QUE94201">QUE94201</option>
+					<option value="Los Angeles">Los Angeles</option>
+					<option value="NWA 480">NWA 480</option>
+					<option value="ALH77005">ALH77005</option>
+					<option value="LEW88516">LEW88516</option>
+					<option value="GRV99027">GRV99027</option>
+					<option value="NWA1950">NWA1950</option>
+					<option value="EETA79001A">EETA79001A</option>
+					<option value="DaG476">DaG476</option>
+					<option value="Sau005">Sau005</option>
+					<option value="Dhofar019">Dhofar019</option>
+					<option value="Chassigny">Chassigny</option>
+					<option value="NWA2737">NWA2737</option>
+					<option value="ALH84001">ALH84001</option>
+					<option value="Humphrey(Gusev)">Humphrey(Gusev)</option>
+					<option value="Irvine(Gusev)">Irvine(Gusev)</option>
+					<option value="Wishstone(Gusev)">Wishstone(Gusev)</option>
+					<option value="Backstay(Gusev)">Backstay(Gusev)</option>
+					<option value="Jahe_M(Gusev)">Jahe_M(Gusev)</option>
+					<option value="Bathurst(Gusev)">Bathurst(Gusev)</option>
+					<option value="Gusev Soil">Gusev Soil</option>
+					<option value="Meridiani Soil">Meridiani Soil</option>
+        </select>
+	<input id="boton" type="button" value="Continuar" onclick="bt_pulsado()" /> 
+    <input id="botonRecargar" type="submit" name="Recargar" value="Seleccione otro Valor" onclick="location.reload(true)"></div>
+    <h2>Susceptibilidad y Volumen de los minerales</h2>
+    <div id="aqui"></div>
+    <div id="info"></div>
+    <h2>Elija entre Valores Personales o Valores Sugeridos</h2>
+    <input id="personal" type="radio" name="dat" value="Personal" style="cursor: pointer"> Valores Personales
+  	<input id="suggested" type="radio" name="dat" value="Suggested" style="cursor: pointer" checked> Valores Sugeridos
+    <img id="icono" title="Si usa valores sugeridos, los valores del campo de volumen, Wt (%), y los del campo de la susceptibilidad, X (SI), no pueden superar el maximo y minimo que se indica en la tabla" src="Images/sm.png"> <br><br><br>
+		<div id="Values">
+			<table>
+				<tr>
+					<td>Mineral</td>
+					<td>Formula</td>
+					<td>Wt% = ?</td>
+					<td>X (SI) = ?</td>
+				</tr>
+				<tr id="f1">
+					<td><input id="p0" type="text" readonly /></td>
+					<td><input id="p1" type="text" readonly /></td>
+					<td><input id="mineral1" type="text" placeholder="0" onchange="PreSumaWt()"/></td>
+					<td><input id="mineral12" type="text" placeholder="0" /></td>
+				</tr>
+				<tr id="f2">
+					<td><input id="p2" type="text" readonly /></td>
+					<td><input id="p3" type="text" readonly /></td>
+					<td><input id="mineral2" type="text" placeholder="0" onchange="PreSumaWt()"/></td>
+					<td><input id="mineral22" type="text" placeholder="0" /></td>
+				</tr>
+				<tr id="f3">
+					<td><input id="p4" type="text" readonly /></td>
+					<td><input id="p5" type="text" readonly /></td>
+					<td><input id="mineral3" type="text" placeholder="0" onchange="PreSumaWt()"/></td>
+					<td><input id="mineral32" type="text" placeholder="0" /></td>
+				</tr>
+                <tr id="f4">
+					<td><input id="p6" type="text" readonly /></td>
+					<td><input id="p7" type="text" readonly /></td>
+					<td><input id="mineral4" type="text" placeholder="0" onchange="PreSumaWt()"/></td>
+					<td><input id="mineral42" type="text" placeholder="0" /></td>
+				</tr>
+                <tr id="f5">
+					<td><input id="p8" type="text" readonly /></td>
+					<td><input id="p9" type="text" readonly /></td>
+					<td><input id="mineral5" type="text" placeholder="0" onchange="PreSumaWt()"/></td>
+					<td><input id="mineral52" type="text" placeholder="0" /></td>
+				</tr>
+                <tr id="f6">
+					<td><input id="p10" type="text" readonly /></td>
+					<td><input id="p11" type="text" readonly /></td>
+					<td><input id="mineral6" type="text" placeholder="0" onchange="PreSumaWt()"/></td>
+					<td><input id="mineral62" type="text" placeholder="0" /></td>
+				</tr>
+                <tr id="f7">
+					<td><input id="p12" type="text" readonly /></td>
+					<td><input id="p13" type="text" readonly /></td>
+					<td><input id="mineral7" type="text" placeholder="0" onchange="PreSumaWt()"/></td>
+					<td><input id="mineral72" type="text" placeholder="0" /></td>
+				</tr>
+			</table>
+		</div>
+        <br />
+        <div id="Tresultado">
+        	<table>
+            	<tr>
+                	<td><input class="bcalcular" id="botonCalcular" type="submit" name="Calcular" value="Calculo de Susceptibilidad" onclick="OptPerSug()"></td>
+                    <td><input id="Wt" type="text" placeholder="Wt% = " readonly /></td>
+                    <td><input id="Resultado" type="text" placeholder="X =  " readonly /></td>
+                </tr>
+            </table>
+        </div>
+        <div id="canvas">
+        	<canvas id="myCanvas" width="650" height="330">Your browser does not support the HTML5 canvas tag.</canvas>
+		</div>
+		<!--<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>-->
+        </div>
+</body>
+</html>

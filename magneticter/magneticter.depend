@@ -1,0 +1,37 @@
+# depslib dependency file v1.0
+1543312994 source:c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\main.cpp
+	"pch.h"
+	"config.h"
+	"magnetometer_info.h"
+	<unistd.h>
+	<fcntl.h>
+	<termios.h>
+	<sys/time.h>
+	<syslog.h>
+	<signal.h>
+	<string.h>
+	<libgpsmm.h>
+
+1542197618 source:c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\magnetometer_info.cpp
+	"pch.h"
+	"config.h"
+	"magnetometer_info.h"
+	<vector>
+	<limits.h>
+	<algorithm>
+	<syslog.h>
+
+1542107822 c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\pch.h
+	<iostream>
+	<iomanip>
+
+1542197566 c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\magnetometer_info.h
+	<string>
+
+1542198197 source:c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\config.cpp
+	"pch.h"
+	"config.h"
+	<syslog.h>
+
+1542182126 c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\config.h
+

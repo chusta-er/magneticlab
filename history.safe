@@ -1,0 +1,902 @@
+    1  sudo -i
+    2  sudo nano /etc/hostname
+    3  sudo nano /etc/hosts
+    4  cat /etc/hostname
+    5  cat /etc/hosts
+    6  man hostnamectl
+    7  hostnamectl set-hostname magneticlab
+    8  sudo hostnamectl set-hostname magneticlab
+    9  sudo reboot
+   10  hostanme
+   11  hostame
+   12  hostname
+   13  hostname -A
+   14  cat /etc/resolv.conf
+   15  cat /etc/networks
+   16  sudo dpkg-reconfigure exim4-config
+   17  cat /etc/mailcap
+   18  cat /etc/mailname
+   19  /etc/motd
+   20  sudo cat /etc/motd
+   21  man motd
+   22  sudo nano /etc/ssh/ssh_host_rsa_key.pub
+   23  sudo nano /etc/ssh/ssh_host_dsa_key.pub
+   24  sudo nano /etc/ssh/ssh_host_ed25519_key.pub
+   25  sudo nano /etc/ssh/ssh_host_ecdsa_key.pub
+   26  sudo cat /etc/ssh/ssh_host_ecdsa_key.pub
+   27  sudo cat /etc/ssh/ssh_host_ed25519_key.pub
+   28  sudo cat /etc/ssh/ssh_host_dsa_key.pub
+   29  sudo cat /etc/ssh/ssh_host_rsa_key.pub
+   30  sudo make-ssl-cert generate-default-snakeoil --force-overwrite
+   31  sudo nano /etc/ssmtp/ssmtp.conf
+   32  ls /etc/fail2ban
+   33  ls /etc/lvm/backup/
+   34  /etc/mdadm/mdadm.conf
+   35  ls /etc/mdadm/mdadm.conf
+   36  ls /etc/mdadm
+   37  mdadm
+   38  sudo -i
+   39  nano /etc/ssh/sshd_config 
+   40  sudo nano vipw
+   41  sudo nano /etc/passwd 
+   42  sudo reboot
+   43  su -
+   44  nano /etc/ssh/sshd_config 
+   45  sudo vi /etc/ssh/sshd_config 
+   46  sudo nano /etc/ssh/sshd_config 
+   47  sudo reboot
+   48  ls
+   49  ls .ssh
+   50  ls -al
+   51  ls .profile
+   52  ls -l .profile
+   53  less .profile 
+   54  ls
+   55  pwd
+   56  cat /etc/passwd
+   57  sudo -i
+   58  passwd
+   59  su -
+   60  sudo -i
+   61  sudo reboot
+   62  ls
+   63  ls -al
+   64  ls -alR
+   65  sudo -i
+   66  groups
+   67  ls -alR
+   68  sudo -i
+   69  sudo reboot
+   70  df -h
+   71  lsblk
+   72  /sbin/fdisk -l
+   73  sudo /sbin/fdisk -l
+   74  sudo raspi-config 
+   75  exprt
+   76  export
+   77  dpkg-reconfigure 
+   78  sudo dpkg-reconfigure -a
+   79  sudo dpkg-reconfigure -i
+   80  sudo locale-gen "en_US.UTF-8"
+   81  sudo dpkg-reconfigure locales
+   82  sudo reboot
+   83  dpkg-reconfigure 
+   84  sudo dpkg-reconfigure 
+   85  sudo dpkg-reconfigure timezone
+   86  date
+   87  man date
+   88  date --help
+   89  date -u
+   90  sudo dpkg-reconfigure tzdata
+   91  date -u
+   92  date 
+   93  export
+   94  sudo dpkg-reconfigure keyboard-configuration
+   95  sudo nano  /etc/default/keyboard
+   96  sudo dpkg-reconfigure keyboard-configuration 
+   97  sudo nano  /etc/default/keyboard
+   98  service keyboard-setup restart
+   99  sudo service keyboard-setup start
+  100  sudo dpkg-reconfigure keyboard-configuration 
+  101  sudo nano  /etc/default/keyboard
+  102  cat /etc/default/keyboard
+  103  sudo reboot
+  104  ntptime
+  105  systemctl status ntp
+  106  SUDO systemctl status ntp
+  107  sudo systemctl status ntp
+  108  sudo apt-get install ntp
+  109  sudo apt-get update && sudo apt-get upgrade
+  110  sudo apt-get update -o Acquire::http::No-Cache=True
+  111  ls
+  112  wget http://www.debian.org/
+  113  cat index.html
+  114  wget time.nist.com
+  115  cat index.html.1
+  116  ping time.inta.es
+  117  ping timeserver
+  118  ping ntp
+  119  ping www.adobe.com
+  120  history
+  121  ls -al
+  122  man wgat
+  123  man wget
+  124  wget http://www.debian.org/ --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36"
+  125  less index.html.2
+  126  less index.html.1
+  127  less index.html
+  128  less index.html.2
+  129  man wget
+  130  wget http://www.debian.org/ -S --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36"
+  131  less index.html.2
+  132  less index.html.3
+  133  noda
+  134  node
+  135  node.js
+  136  history |grep python
+  137  ls -l
+  138  ls
+  139  rm index.html.1
+  140  rm index.html.3
+  141  rm index.html.2
+  142  dir
+  143  history |grep wget
+  144  ls
+  145  less Access\?AgentCode\=000 
+  146  Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0)
+  147  rm index.html
+  148  wget http://www.debian.org/ -S --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36"
+  149  cat inta_to_debian_url.txt 
+  150  rm Access\?AgentCode\=000 
+  151  wget -S --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36" https://internet.inta.es/Access?AgentCode=000&url=aHR0cDovL3d3dy5kZWJpYW4ub3Jn&cti=
+  152  cat Access\?AgentCode\=000 
+  153  # wget http://www.my-remote-domain.co.uk/images/in/some/folder/my-image.jpg --header="User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:23.0) Gecko/20100101 Firefox/23.0" --header="Accept: image/png,image/*;q=0.8,*/*;q=0.5" --header="Accept-Language: en-US,en;q=0.5" --header="Accept-Encoding: gzip, deflate" --header="Referer: http://www.mozilla.org"
+  154  # wget http://www.debian.org -S --header="User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:23.0) Gecko/20100101 Firefox/23.0" --header="Accept: image/png,image/*;q=0.8,*/*;q=0.5" --header="Accept-Language: en-US,en;q=0.5" --header="Accept-Encoding: gzip, deflate" --header="Referer: http://www.mozilla.org"
+  155  wget http://www.debian.org -S --header="User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:23.0) Gecko/20100101 Firefox/23.0" --header="Accept: image/png,image/*;q=0.8,*/*;q=0.5" --header="Accept-Language: en-US,en;q=0.5" --header="Accept-Encoding: gzip, deflate" --header="Referer: http://www.mozilla.org"
+  156  less index.html
+  157  less index.html.1
+  158  ls -l
+  159  diff index.html index.html.1
+  160  cat inta_to_debian_url.txt 
+  161  man wgat
+  162  man wget
+  163  ls
+  164  rm Access\?AgentCode\=000 
+  165  rm index.html
+  166  rm index.html.1
+  167  ls -al
+  168  ls -l
+  169  wget -S --header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0' --header='Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' --header='Accept-Language: en-US,en;q=0.5' --header='Accept-Encoding: gzip, deflate, br' --header='Connection: keep-alive' --header='Upgrade-Insecure-Requests: 1' https://internet.inta.es/Access?AgentCode=000&url=aHR0cDovL3d3dy5kZWJpYW4ub3Jn&cti=
+  170  cat Access\?AgentCode\=000 
+  171  wget -S --header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0' --header='Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' --header='Accept-Language: en-US,en;q=0.5' --header='Accept-Encoding: gzip, deflate, br' --header='Connection: keep-alive' --header='Upgrade-Insecure-Requests: 1' --header='Set-Cookie: NACSID=0184ce9d64b394b32e9eb91392773a0b' https://internet.inta.es/Access?AgentCode=000&url=aHR0cDovL3d3dy5kZWJpYW4ub3Jn&cti=
+  172  wget -S --header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0' --header='Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' --header='Accept-Language: en-US,en;q=0.5' --header='Accept-Encoding: gzip, deflate, br' --header='Connection: keep-alive' --header='Upgrade-Insecure-Requests: 1' --header='Cookie: NACSID=0184ce9d64b394b32e9eb91392773a0b' https://internet.inta.es/Access?AgentCode=000&url=aHR0cDovL3d3dy5kZWJpYW4ub3Jn&cti=
+  173  cat Access\?AgentCode\=000.3
+  174  man wget
+  175  curl
+  176  ls
+  177  rm Access\?AgentCode\=000*
+  178  ls
+  179  man curl
+  180  ls -al
+  181  wget -S --header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0' --header='Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' --header='Accept-Language: en-US,en;q=0.5' --header='Accept-Encoding: gzip, deflate, br' --header='Upgrade-Insecure-Requests: 1' https://internet.inta.es/Access?AgentCode=000&url=aHR0cDovL3d3dy5kZWJpYW4ub3Jn&cti=
+  182  cat Access\?AgentCode\=000 
+  183  wget -S --header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0' --header='Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' --header='Accept-Language: en-US,en;q=0.5' --header='Accept-Encoding: gzip, deflate, br' --header='Upgrade-Insecure-Requests: 1' -header='Cookie: NACSID=360c7cd3d4ee744ae3a24ed548670cb0' https://internet.inta.es/PortalMain
+  184  wget -S --header='User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0' --header='Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' --header='Accept-Language: en-US,en;q=0.5' --header='Accept-Encoding: gzip, deflate, br' --header='Upgrade-Insecure-Requests: 1' --header='Cookie: NACSID=360c7cd3d4ee744ae3a24ed548670cb0' https://internet.inta.es/PortalMain
+  185  less PortalMain
+  186  ls -al
+  187  exit
+  188  ls -al
+  189  rm PortalMain 
+  190  ls -l
+  191  rm Access\?AgentCode\=000 
+  192  ls -l
+  193  rm inta_to_debian_url.txt 
+  194  ls -al
+  195  node
+  196  lsb_release -a
+  197  ls
+  198  cd /opt
+  199  cd #
+  200  ls -l
+  201  rm *.xz
+  202  ls -lh
+  203  pwd
+  204  cd /opt
+  205  sudo tar -xvf /home/tesla/node-v8.12.0-linux-armv7l.tar 
+  206  ls
+  207  ls vc
+  208  ls -al
+  209  cd #
+  210  PATH=$PATH:node-v8.12.0-linux-armv7l/bin
+  211  echo $PATH
+  212  node
+  213  PATH=$PATH:/opt/node-v8.12.0-linux-armv7l/bin
+  214  node
+  215  ls
+  216  wget -O- www.debian.org
+  217  node login_inet.js 
+  218  wget -O- https://www.debian.org
+  219  date
+  220  date -set 
+  221  date -s "Fri Oct 26 15:02:00 CEST 2018"
+  222  sudo date -s "Fri Oct 26 15:02:00 CEST 2018"
+  223  node login_inet.js 
+  224  wget -O- https://www.debian.org
+  225  sudo apt-get update && sudo apt-get -y upgrade
+  226  sudo apt-get update && sudo apt-get -y dist-upgrade
+  227  sudo poweroff
+  228  nano login_inet.js 
+  229  node ./login_inet.js 
+  230  sudo nano /etc/profile
+  231  sudo nano /etc/environment 
+  232  man /etc/environment
+  233  man environment
+  234  set
+  235  export
+  236  sudo nano /etc/environment 
+  237  ls /opt/node-v8.12.0-linux-armv7l/bin/
+  238  sudo nano /etc/environment 
+  239  sudo reboot
+  240  id
+  241  export
+  242  sudo nano /etc/environment 
+  243  ls -al
+  244  mkdir .ssh
+  245  ls .ssh
+  246  cd .ssh
+  247  cat id_rsa.pub 
+  248  mv id_rsa.pub allowed_keys
+  249  ls -al
+  250  cd .ssh
+  251  mv allowed_keys authorized_keys
+  252  ls -al
+  253  cat .profile 
+  254  cd /etc/profile.d
+  255  ls -al
+  256  nano nodejs_to_path.sh
+  257  head wifi-country.sh 
+  258  head sshpwd.sh 
+  259  sudo nano nodejs_to_path.sh
+  260  ls /opt
+  261  sudo nano nodejs_to_path.sh
+  262  sudo reboot
+  263  cd /opt
+  264  export
+  265  ls -l
+  266  cd /etc/profile.d/
+  267  ls -al
+  268  cat nodejs_to_path.sh 
+  269  cd #
+  270  history |grep dpkg
+  271  history |grep rasp
+  272  node ./login_inet.js 
+  273  sudo reboot
+  274  sudo apt-get update && sudo apt-get -y dist-upgrade
+  275  history |grep date
+  276  man node
+  277  ls
+  278  npm --registry=http://registry.npmjs.org install readline-sync --global
+  279  node login_inet.js 
+  280  ls -al
+  281  rm node-v8.12.0-linux-armv*
+  282  ls .npm
+  283  npm --registry=http://registry.npmjs.org install readline-sync
+  284  ls -l
+  285  cat package-lock.json 
+  286  node login_inet.js 
+  287  ls -l
+  288  nano login_inet.js 
+  289  ls -l
+  290  nano login_inet.js 
+  291  node login_inet.js 
+  292  nano login_inet.js 
+  293  node login_inet.js 
+  294  nano login_inet.js 
+  295  node login_inet.js 
+  296  nano login_inet.js 
+  297  node login_inet.js 
+  298  nano login_inet.js 
+  299  node login_inet.js 
+  300  nano login_inet.js 
+  301  node login_inet.js 
+  302  nano login_inet.js 
+  303  node login_inet.js 
+  304  nano login_inet.js 
+  305  node login_inet.js 
+  306  nano login_inet.js 
+  307  node login_inet.js 
+  308  nano login_inet.js 
+  309  node login_inet.js 
+  310  nano login_inet.js 
+  311  node login_inet.js 
+  312  wget www.debian.org
+  313  node login_inet.js 
+  314  nano login_inet.js 
+  315  wget -S www.debian.org
+  316  rm index.html*
+  317  ls
+  318  ls -al
+  319  ls -l
+  320  nano login_inet.js 
+  321  ls -l
+  322  node login_inet.js 
+  323  ls
+  324  wget http://internet.inta.es/PortalMain
+  325  node login_inet.js 
+  326  rm PortalMain 
+  327  ls
+  328  sudo reboot
+  329  node login_inet.js 
+  330  ls -l login_inet.js 
+  331  nano set_time_form_roa.sh
+  332  chmod a+x set_time_form_roa.sh 
+  333  ls -l
+  334  ./set_time_form_roa.sh 
+  335  which bash
+  336  nano set_time_form_roa.sh
+  337  ./set_time_form_roa.sh 
+  338  sudo ./set_time_form_roa.sh 
+  339  date
+  340  mv set_time_form_roa.sh set_time_from_roa.sh 
+  341  sudo ./set_time_form_roa.sh 
+  342  sudo ./set_time_from_roa.sh 
+  343  date
+  344  gdb
+  345  gdbserver
+  346  apt-get install gdbserver 
+  347  sudo apt-get install gdbserver 
+  348  ls
+  349  cat set_time_from_roa.sh 
+  350  ls
+  351  mv bin\\Release\\magneticter magneticter
+  352  chmod a+x magneticter 
+  353  ls -l
+  354  ./magneticter 
+  355  objdump -x magneticter 
+  356  objdump -x magneticter |grep dll
+  357  objdump -x magneticter |grep -i dll
+  358  objdump -x magneticter |grep -i dynamic
+  359  objdump -x magneticter |grep -i shared
+  360  rm magneticter 
+  361  ls -l
+  362  objdump -x magneticter
+  363  chmod a+x magneticter 
+  364  ./magneticter 
+  365  ls -l
+  366  man scp
+  367  ls -al
+  368  ./magneticter 
+  369  gdbserver 9999 magneticter 
+  370  gdbserver :9999 magneticter 
+  371  history |grep gdb
+  372  ls
+  373  date 
+  374  sudo apt-get install ufw
+  375  ls -al
+  376  node login_inet.js 
+  377  sudo apt-get install ufw
+  378  sudo ufw status
+  379  sudo apt-get install nginx
+  380  sudo apt-get update
+  381  sudo apt-get install nginx
+  382  sudo apt-get upgrade
+  383  sudo apt-get dist-upgrade
+  384  sudo apt-get clean
+  385  sudo apt-get autoclean
+  386  sudo apt-get autoremove
+  387  df -h
+  388  ls /var/www/
+  389  ls /var/www/html/
+  390  ls /etc/nginx/sites-enabled/
+  391  ls -l /etc/nginx/sites-enabled/
+  392  ls -l /etc/nginx/sites-available/
+  393  less /etc/nginx/sites-available/default 
+  394  cp /etc/nginx/sites-available/default /etc/nginx/sites-available/magneticlab
+  395  sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/magneticlab
+  396  sudo nano /etc/nginx/sites-available/magneticlab
+  397  rm /etc/nginx/sites-enabled/default 
+  398  sudo rm /etc/nginx/sites-enabled/default 
+  399  service nginx restart
+  400  sudo service nginx restart
+  401  dmesg
+  402  tail /var/log/nginx/
+  403  tail /var/log/nginx/error.log 
+  404  service nginx restart
+  405  sudo service nginx restart
+  406  ps -eaf |grep nginx
+  407  cd /etc/nginx/sites-enabled/
+  408  sudo ln -s /etc/nginx/sites-available/magneticlab 
+  409  sudo service nginx restart
+  410  cd /var/www/
+  411  ls
+  412  sudo mkdir magneticlab
+  413  cd magneticlab/
+  414  ls 
+  415  ls -l
+  416  cd ..
+  417  ls -l
+  418  cd magneticlab/
+  419  unzip ~/Paper\ Free\ Website\ Template\ -\ Free-CSS.com.zip 
+  420  sudo unzip ~/Paper\ Free\ Website\ Template\ -\ Free-CSS.com.zip 
+  421  ls
+  422  cd paper
+  423  mv * .//
+  424  mv * ../
+  425  sudo mv * ../
+  426  ls -l
+  427  cd ..
+  428  sudo rmdir paper
+  429  ls
+  430  ps -ef |grep ngin
+  431  ls
+  432  apt-cache showpkg nodejs
+  433  apt-get install nodejs
+  434  apt-cache showpkg nodejs
+  435  ls
+  436  cp -R /var/www/magneticlab/ magneticlab/
+  437  ls
+  438  ls -l
+  439  ls -l magneticlab/
+  440  cd /var/www
+  441  ls -l
+  442  ls
+  443  sudo rm -r magneticlab/
+  444  ls
+  445  sudo ls -l /home/tesla/magneticlab magneticlab
+  446  sudo ln -s /home/tesla/magneticlab magneticlab
+  447  ls -l
+  448  date
+  449  ls /
+  450  cat /var/log/syslog
+  451  cat /var/log/syslog |grep ntp
+  452  cat /var/log/syslog.1 |grep ntp
+  453  ls -l /var/log/syslog
+  454  ls -l /var/log/syslog*
+  455  gzcat
+  456  cat
+  457  h9la
+  458  echo h9la
+  459  zcat /var/log/syslog.2
+  460  zcat /var/log/syslog.2 |grep ntp
+  461  zcat /var/log/syslog.3 |grep ntp
+  462  zcat /var/log/syslog.2 |grep ntp
+  463  ls
+  464  node login_inet.js 
+  465  sudo service ntp restart
+  466  sudo -i
+  467  zcat /var/log/syslog.2 |grep ntp
+  468  cat /var/log/syslog |grep ntp
+  469  systemctl restart systemd-timesyncd
+  470  sudo systemctl restart systemd-timesyncd
+  471  date
+  472  cat /var/log/syslog |grep ntp
+  473  host 0.debian.pool.ntp.org
+  474  ps -ef |grep ntp
+  475  ps -ef |grep ntpd
+  476  ps -ef |grep systemd-time
+  477  file /etc/
+  478  file /etc
+  479  tree /etc
+  480  find /etc
+  481  find /etc |grep timesyncd.conf
+  482  sudo find /etc |grep timesyncd.conf
+  483  cd /etc/systemd/
+  484  sudo nano timesyncd.conf 
+  485  sudo systemctl restart systemd-timesyncd
+  486  tail /etc/syslog|grep ntp
+  487  sudo tail /etc/syslog | grep ntp
+  488  sudo tail /var/log/syslog | grep ntp
+  489  sudo systemctl restart systemd-timesyncd
+  490  sudo tail /var/log/syslog | grep ntp
+  491  sudo nano /etc/systemd/timesyncd.conf 
+  492  ping es.pool.ntp.org
+  493  sudo tail /var/log/syslog | grep ntp
+  494  sudo nano /etc/systemd/timesyncd.conf 
+  495  sudo tail /var/log/syslog | grep ntp
+  496  sudo systemctl restart systemd-timesyncd
+  497  sudo tail /var/log/syslog | grep ntp
+  498  cd 
+  499  ~ls
+  500  ls -l
+  501  ./set_time_from_roa.sh 
+  502  sudo ./set_time_from_roa.sh 
+  503  date
+  504  ls /dev/tty*
+  505  ls -/dev/tty*
+  506  ls -l /dev/tty*
+  507  ls -al
+  508  ls magneticter 
+  509  ls magneticter magnetic
+  510  ls magneticter
+  511  ls-l  magneticter
+  512  ls -l  magneticter
+  513  groups
+  514  id
+  515  hostname -A
+  516  export
+  517  hostname
+  518  hostname -A
+  519  hostname -L
+  520  hostname -d
+  521  hostname -f
+  522  hostname -y
+  523  hostname -s
+  524  hostname -I
+  525  hostname -i
+  526  hostname -a
+  527  hostname -A
+  528  finger
+  529  top
+  530  user
+  531  w
+  532  who
+  533  w
+  534  date
+  535  man date
+  536  date +%s
+  537  man date
+  538  ps -ef |grep exim
+  539  find /etc/ |grep syslog
+  540  cat /etc/systemd/system/syslog.service
+  541  man syslog
+  542  sudo nano /etc/init.d/sysklogd
+  543  top
+  544  ps -ef |grep syslog
+  545  find /etc/ |grep rsyslog
+  546  nano /etc/rsyslog.conf 
+  547  man syslog
+  548  ps -ef systemd
+  549  ps -ef |grep systemd
+  550  ls
+  551  apt-cache search selinux
+  552  apt-cache search apparmor
+  553  man daemon
+  554  man 7 daemon
+  555  ls /usr/share/systemd/
+  556  ls /usr/share/man/
+  557  ls /usr/share/man/cs
+  558  ls /usr/share/man/man7
+  559  ls -l
+  560  man 7 daemon
+  561  lsblk
+  562  df -h
+  563  sudo mount -t auto /dev/sda1 /mnt
+  564  df -h
+  565  ls /mnt
+  566  fdisk -l /dev/sda
+  567  sudo fdisk -l /dev/sda
+  568  man open
+  569  man 5 open
+  570  man 7 open
+  571  man 1 open
+  572  man 2 open
+  573  man tty
+  574  man 2 open
+  575  ls /dev/tty
+  576  ls /dev/tty*
+  577  ls -l /dev/tty*
+  578  man read
+  579  man 1 open
+  580  man 2 open
+  581  ls -l
+  582  ./magneticter 
+  583  ls
+  584  cd magneticlab/web
+  585  cd magneticlab/
+  586  ls
+  587  nano index.html
+  588  tail -f /var/log/nginx/access.log
+  589  apt-cache showpkg gpsd
+  590  ls /tty*
+  591  ls /dev/tty*
+  592  read /dev/ttyUSB1
+  593  man read
+  594  man 5 read
+  595  man 8 read
+  596  man 7 read
+  597  man 1 read
+  598  man 2 read
+  599  man bassh
+  600  man bash
+  601  echo < /dev/ttys1
+  602  echo < /dev/ttyUSB1
+  603  ls
+  604  stty -F /dev/ttyUSB1 9600
+  605  echo < /dev/ttyUSB1
+  606  echo < /dev/ttyUSB0
+  607  od -x < /dev/ttyUSB1
+  608  cat /dev/ttyUSB1
+  609  cat /dev/ttyUSB0
+  610  cat /dev/ttyUSB1
+  611  echo "FRESET" > /dev/ttyUSB1
+  612  cat /dev/ttyUSB1
+  613  echo "LOG COM1 GPGGA ONTIME 1" > /dev/ttyUSB1
+  614  cat /dev/ttyUSB1
+  615  echo "DATUM WGS84" > /dev/ttyUSB1
+  616  echo "SAVECONFIG" > /dev/ttyUSB1
+  617  cat /dev/ttyUSB1
+  618  man netstat
+  619  man stty
+  620  stty -F /dev/ttyUSB1 raw
+  621  cat /dev/ttyUSB1
+  622  sudo apt-get dist-upgrade
+  623  sudo apt-get -y update && sudo apt-get -y dist-upgrade
+  624  tail -f /var/log/nginx/access.log
+  625  history
+  626  ls -l
+  627  node login_inet.js 
+  628  sudo apt-get -y update && sudo apt-get -y dist-upgrade
+  629  sudo reboot
+  630  man lsof
+  631  lsof
+  632  fuse -4
+  633  fuser -4
+  634  fuser -l
+  635  fuser :8
+  636  fuser :80
+  637  netstat 
+  638  netstat -t
+  639  netstat -tl
+  640  netstat -tlp
+  641  sudo netstat -tlp
+  642  df -h
+  643  free
+  644  fuser -uvm /
+  645  fuser -uvm /usr
+  646  fuser -uvm /bin
+  647  fuser -uvm /home
+  648  fuser -uvm /home/tesla
+  649  fuser -uvm /root
+  650  cat /dev/USB0
+  651  ls /dev/tty*
+  652  cat /dev/ttyUSB0
+  653  stty -F /dev/ttyUSB0 115200
+  654  cat /dev/ttyUSB0
+  655  stty -F /dev/ttyUSB0 raw
+  656  history
+  657  history |grep tty
+  658  od -x </dev/ttyUSB0
+  659  man od
+  660  od -A x -t x1z -v
+  661  od -A x -t x1z -v </dev/ttyUSB0
+  662  ls -al
+  663  ./magneticter 
+  664  man read
+  665  ./magneticter 
+  666  man gettime
+  667  man utime
+  668  man time
+  669  man gettimeofday
+  670  man ctime
+  671  man ftime
+  672  man ctime
+  673  man clock
+  674  man ctime
+  675  man difftime
+  676  man gmtime
+  677  man ctime
+  678  man ftime
+  679  man gettimeofday 
+  680  man limits
+  681  man limits.h
+  682  ./magneticter 
+  683  man syslog
+  684  man 1 logger
+  685  man syslog
+  686  ./magneticter 
+  687  man syslog
+  688  ./magneticter 
+  689  history |grep remote
+  690  history |grep gdb
+  691  gdbserver :9999 magneticter 
+  692  top
+  693  ps -f 
+  694  ps -ef
+  695  ps -ef |grep GDB
+  696  ps -ef |grep gdb
+  697  kill -SIGTERM 3579
+  698  ps -ef |grep gdb
+  699  kill -SIGTERM 3270
+  700  kill -SIGTERM 3677
+  701  top
+  702  ls
+  703  man yield
+  704  man 1 yield
+  705  man 2 yield
+  706  ./magneticter 
+  707  man open
+  708  man 5 open
+  709  man 1 open
+  710  man 7 open
+  711  man 2 open
+  712  man sllep
+  713  man sleep
+  714  man 2 sleep
+  715  man sched_yield
+  716  man sched
+  717  man fcntl
+  718  man selectr
+  719  man select
+  720  man sched_yield
+  721  ./magneticter 
+  722  man signal
+  723  man sigaction
+  724  man signal
+  725  man strsignal
+  726  ./magneticter 
+  727  apt-cache search php
+  728  apt-cache showpkg php
+  729  apt-cache showpkg php5
+  730  apt-get showpkg php
+  731  apt-cache showpkg php5
+  732  apt-get install php
+  733  apt-get showpkg php7
+  734  apt-cache showpkg php7
+  735  apt-cache showpkg php
+  736  apt-cache showpkg php5
+  737  sudo apt-get install php5
+  738  sudo apt-get install php
+  739  make
+  740  gcc
+  741  g++
+  742  mkdir build
+  743  cd build
+  744  ls
+  745  xz 
+  746  xz -d php-5.6.38.tar.xz 
+  747  ls
+  748  tar -xvf php-5.6.38.tar 
+  749  ls
+  750  rm php-5.6.38.tar 
+  751  cd php-5.6.38/
+  752  ls
+  753  ./configure --help
+  754  ./configure --prefix=/opt/php5
+  755  make
+  756  ls
+  757  sudo apt-get install libxml2-dev 
+  758  cd #
+  759  node ./login_inet.js 
+  760  cd build/php-5.6.38/
+  761  sudo apt-get install libxml2-dev 
+  762  ./configure --prefix=/opt/php5
+  763  make
+  764  ls
+  765  make install
+  766  sudo make install
+  767  cd /opt/php5/
+  768  ls
+  769  ps -ef |grep php
+  770  ls
+  771  ls php
+  772  ls -l
+  773  ls etc
+  774  ls etc/
+  775  ls -l etc/
+  776  find |grep sapi
+  777  ls etc
+  778  bin/php-cgi 
+  779  ls -al
+  780  bin/php-cgi --help
+  781  bin/php-cgi -a
+  782  bin/php-config 
+  783  bin/php-cgi -l
+  784  bin/php-cgi -i
+  785  bin/php-cgi --help
+  786  ls bin
+  787  ls php
+  788  ls etc
+  789  cd ..
+  790  ls -l php5/
+  791  cd #
+  792  cd build/php-5.6.38/
+  793  less make
+  794  ls
+  795  less Makefile
+  796  sudo rm -r /opt/php5/
+  797  history |grep confi
+  798  ./configure --prefix=/opt/php5 --disable-cli --disable-cgi --enable-fpm
+  799  make
+  800  ls sapi/fpm/
+  801  sudo make install
+  802  cd /opt
+  803  ls -lAr
+  804  ls -laR
+  805  ls -laR |grep conf
+  806  ls lib
+  807  cd php5/
+  808  ls lib
+  809  ls lib/php/
+  810  ls lib/php/build/
+  811  ls lib/php/extensions/
+  812  ls
+  813  ls -alR |grep php-fpm.conf
+  814  ls -al
+  815  ls -alR |grep php-fpm
+  816  find |grep php-fpm
+  817  cd etc
+  818  ls -l
+  819  less php-fpm.conf.default 
+  820  sudo -i
+  821  ./magneticter 
+  822  cd /opt/php5/
+  823  ls
+  824  ls -alR
+  825  ./magneticter 
+  826  cd #
+  827  ./magneticter 
+  828  history |grep gdb
+  829  gdbserver :9999 magneticter 
+  830  ls -l
+  831  file magnetic
+  832  file magneticter 
+  833  ./magneticter 
+  834  ls -lh
+  835  cd build
+  836  ls
+  837  cd php-5.6.38/
+  838  ls
+  839  less README.md 
+  840  less php.ini-production 
+  841  sudo cp php.ini-production /opt/php5/etc/php.ini
+  842  dmesg
+  843  netstat
+  844  netstat |grep php
+  845  netstat -l |grep php
+  846  netstat -lt |grep php
+  847  sudo netstat -lt |grep php
+  848  sudo netstat -lt
+  849  sudo netstat -l
+  850  make uninstall
+  851  sudo make uninstall
+  852  ./configure --help
+  853  ls
+  854  cd magneticlab
+  855  ls
+  856  cd ..
+  857  ls -l
+  858  ls -l magneticlab/
+  859  sudo adduser
+  860  man useradd
+  861  man adduser
+  862  adduser magneticlab
+  863  sudo adduser magneticlab
+  864  su - magneticlab
+  865  cd build
+  866  ls
+  867  cd php-5.6.38/
+  868  ls
+  869  find |grep system
+  870  find |grep \.service
+  871  find /opt/php5/ |grep \.service
+  872  cd sapi
+  873  ls
+  874  cd fpm/
+  875  ls
+  876  fin /opt/php5/ |grep man
+  877  find /opt/php5/ |grep man
+  878  man /opt/php5/php/man/man8/php-fpm.8
+  879  ls
+  880  vi php-fpm.service
+  881  nano php-fpm.service
+  882  nano php-fpm.service.in 
+  883  cd ..
+  884  man make
+  885  ls -l
+  886  less INSTALL 
+  887  ./configure --help
+  888  nano php-fpm.service.in 
+  889  ls 
+  890  sudo cp sapi/fpm/php-fpm.service /etc/systemd/system/
+  891  ls
+  892  cd /etc/systemd/system/
+  893  ls
+  894  ls -l
+  895  sudo nano php-fpm.service 
+  896  history
+  897  sudo nano php-fpm.service 
+  898  cd /etc/systemd/system/
+  899  sudo nano php-fpm.service 
+  900  cd #
+  901  ls
+  902  history > history.safe

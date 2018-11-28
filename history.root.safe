@@ -1,0 +1,208 @@
+    1  hostname 
+    2  hostname -L
+    3  hostname -a
+    4  hostname -A
+    5  hostname -f
+    6  usermod -l tesla pi
+    7  usermod -l tesla pi
+    8  pe -ef
+    9  ps -ef
+   10  kill -SIGTERM 507
+   11  kill -SIGTERM 510
+   12  ps -ef
+   13  kill -SIGTERM 517
+   14  passwd
+   15  usermod -l tesla pi
+   16  cat /etc/passwd
+   17   /etc/shadow
+   18  nano /etc/passwd
+   19  mv /home/pi /home/tesla
+   20  su - tesla
+   21  su tesla
+   22  su - tesla
+   23  nano /etc/ssh/sshd_config 
+   24  ls -al /etc/ssh/ 
+   25  ssh-add 
+   26  man ssh-add 
+   27  cd /etc/ssh
+   28  ls
+   29  ls -al
+   30  cat ssh_import_id 
+   31  cat ssh_host_rsa_key
+   32  cat ssh_host_rsa_key.pub 
+   33  cat ssh_host_dsa_key.pub 
+   34  ls -al
+   35  cat ssh_host_ed25519_key.pub 
+   36  cat ssh_host_ecdsa_key.pub 
+   37  less sshd_config 
+   38  less sshd_config 
+   39  usermod -m -d /home/tesla tesla
+   40  mv /home/tesla /home/pi
+   41  usermod -m -d /home/pi tesla
+   42  mv /home/pi /home/pi
+   43  mv /home/pi /home/tesla
+   44  usermod -m -d /home/pi tesla
+   45  nano /etc/shadow
+   46  nano /etc/passwd
+   47  nano /etc/ssh/sshd_config 
+   48  sudo systemctl restart ssh
+   49  nano /etc/ssh/sshd_config 
+   50  reboot
+   51  su - tesla
+   52  dmesg
+   53  dmesg
+   54  dmesg
+   55  tail /var/log/auth.log 
+   56  su - tesla
+   57  nano /etc/ssh/sshd_config 
+   58  passwd -l root
+   59  cat /etc/passwd
+   60  reboot
+   61  cat /etc/passwd
+   62  nano /etc/passwd
+   63  nano /etc/passwd
+   64  nano /etc/ssh/sshd_config 
+   65  reboot
+   66  cat /etc/shadow
+   67  cat /etc/shadow
+   68  cat /etc/passwd
+   69  cat /etc/group
+   70  cat /etc/group |grep pi
+   71  goupmod
+   72  gropus
+   73  grops
+   74  groups
+   75  man addgroup
+   76  groupmod
+   77  groupmod -n tesla pi
+   78  cat /etc/group |grep pi
+   79  cat /etc/group |grep tesla
+   80  systemctl restart ntp
+   81  ls
+   82  service timesyncd
+   83  systemctl restart ntp
+   84  pwd
+   85  cd /opt/php5/etc
+   86  ls -l
+   87  cp php-fpm.conf.default php-fpm.conf
+   88  cd ..
+   89  ls
+   90  ls bin
+   91  ls sbin
+   92  sbin/php-fpm 
+   93  groupadd
+   94  groupadd php
+   95  cat /etc/groups
+   96  cat /etc/groups
+   97  cat /etc/group
+   98  useradd php
+   99  useradd -g php
+  100  useradd -g php php
+  101  cd 
+  102  pwd
+  103  cd /opt/php5/etc/
+  104  nano php-fpm.conf
+  105  cd ../
+  106  sbin/php-fpm 
+  107  ps -ef |grep phph
+  108  ps -ef |grep php
+  109  cat /etc/passswd
+  110  cat /etc/passwd
+  111  cat /etc/group
+  112  id php
+  113  netstat
+  114  netstat |grep php
+  115  netstat -l |grep php
+  116  netstat -lt |grep php
+  117  ls /var/run
+  118  lsof
+  119  nano etc/php-fpm.conf
+  120  ps -ef |grep php
+  121  kill -SIGTERM 31621
+  122  ps -ef |grep php
+  123  history
+  124  history >/home/testa/history.root.safe
+  125  history >/home/tesla/history.root.safe
+  126  history
+  127  userdel
+  128  userdel -f -r php
+  129  groupdel
+  130  groupdel -f php
+  131  cat /etc/group
+  132  cd /opt/etc
+  133  cd /opt/php5/etc
+  134  ls
+  135  nano php-fpm.conf
+  136  cd ..
+  137  /opt/php5/sbin/php-fpm 
+  138  ps -ef
+  139  ps -ef |grep php
+  140  ls /var/run
+  141  ls run/
+  142  ls
+  143  ls var
+  144  ls var/run/
+  145  ls var/log
+  146  tail -f -n 1000 /opt/php5/var/log/php-fpm.log 
+  147  ls var/run/
+  148  ps -ef |grep php
+  149  cd /etc/nginx/
+  150  ls
+  151  ls -l
+  152  ps -ef |grep nginx
+  153  ls conf.d
+  154  ls conf.d/
+  155  ls -al conf.d/
+  156  ls -al snippets/
+  157  less snippets/fastcgi-php.conf 
+  158  less snippets/snakeoil.conf 
+  159  ls -l
+  160  ls -l modules-enabled/
+  161  ls -l modules-available/
+  162  ls -al modules-available/
+  163  ls -al sites-available/
+  164  ls -al sites-enabled/
+  165  nano sites-enabled/magneticlab 
+  166  nano sites-enabled/magneticlab 
+  167  cd /var /www
+  168  cd /var/www
+  169  ls
+  170  ls -l
+  171  rm magneticlab
+  172  ln -s /home/magneticlab/phpweb magneticlab
+  173  ls -l
+  174  ls magneticlab/
+  175  cd #
+  176  service nginx restart
+  177  tail /opt/php5/var/log/php-fpm.log 
+  178  tail /var/log/nginx/error.log
+  179  cd /var/www
+  180  ls -l
+  181  ls -l /home/magneticlab
+  182  ls -l /home/magneticlab/phpweb/
+  183  ls -l /home/magneticlab/
+  184  ls -l /home/magneticlab/
+  185  ls -l /home/
+  186  tail /var/log/nginx/error.log
+  187  tail /opt/php5/var/log/php-fpm.log 
+  188  ps -ef |grep system
+  189  cd /opt/php5/
+  190  ls
+  191  ls -l
+  192  ls /var/run/ph*
+  193  ls /opt/php5/var/run/ph*
+  194  cd #
+  195  systemctl enable php-fpm.service
+  196  systemctl restart php-fpm.service
+  197* 
+  198  tail /opt/php5/var/log/php-fpm.log 
+  199  pf -ef php
+  200  pf -ef |grep php
+  201  ps -ef |grep php
+  202  kill -SIGTERM 412
+  203  ps -ef |grep php
+  204  systemctl start php-fpm.service
+  205  ps -ef |grep php
+  206  kill -SIGTERM 1217
+  207  systemctl start php-fpm.service
+  208  history > /home/tesla/history.root.safe 
