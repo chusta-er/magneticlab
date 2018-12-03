@@ -20,7 +20,9 @@ struct magnetic_info_t
     : bx(bx), by(by), bz(bz),
       sensor_temp(sensor_temp), bat1(bat_prev), temp1(temp_prev) {}
 
-    magnetic_info_t() {}
+    magnetic_info_t()
+    : bx(0), by(0), bz(0), sensor_temp(0),
+      bat1(bat_prev), temp1(temp_prev) {}
     // --------------
     // Type handlers:
     // --------------

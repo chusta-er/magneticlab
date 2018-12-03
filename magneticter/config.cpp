@@ -17,6 +17,7 @@ int get_log_level()
     return LOG_INFO;
 }
 
-void load_config()
+bool load_config()
 {
+    return true;
 }
