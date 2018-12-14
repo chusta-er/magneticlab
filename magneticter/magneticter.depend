@@ -1,8 +1,9 @@
 # depslib dependency file v1.0
-1543832160 source:c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\main.cpp
+1544773547 source:c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\main.cpp
 	"pch.h"
 	"config.h"
 	"magnetometer_info.h"
+	"candm.h"
 	<unistd.h>
 	<fcntl.h>
 	<termios.h>
@@ -14,8 +15,13 @@
 	<sys/ipc.h>
 	<sys/shm.h>
 	<time.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<arpa/inet.h>
+	<math.h>
+	<stddef.h>
 
-1542197618 source:c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\magnetometer_info.cpp
+1544784064 source:c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\magnetometer_info.cpp
 	"pch.h"
 	"config.h"
 	"magnetometer_info.h"
@@ -28,13 +34,15 @@
 	<iostream>
 	<iomanip>
 
-1543827843 c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\magnetometer_info.h
+1544784064 c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\magnetometer_info.h
 	<string>
 
-1543826016 source:c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\config.cpp
+1543832396 source:c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\config.cpp
 	"pch.h"
 	"config.h"
 	<syslog.h>
 
 1543826016 c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\config.h
+
+1544442458 c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\candm.h
 

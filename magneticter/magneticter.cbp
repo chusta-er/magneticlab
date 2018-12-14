@@ -42,6 +42,7 @@
 			<Add after="C:\cygwin64\bin\scp $(TARGET_OUTPUT_FILE) tesla@magneticlab.inta.es:./$(TARGET_OUTPUT_BASENAME)" />
 			<Add after="C:\cygwin64\bin\ssh tesla@magneticlab.inta.es chmod a+x ~/$(TARGET_OUTPUT_BASENAME)" />
 		</ExtraCommands>
+		<Unit filename="candm.h" />
 		<Unit filename="config.cpp" />
 		<Unit filename="config.h">
 			<Option target="&lt;{~None~}&gt;" />

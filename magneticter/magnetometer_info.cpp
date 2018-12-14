@@ -189,10 +189,15 @@ static bool find_and_log_and_discard( size_t offset )
 }
 
 // Append data to rx state machine buffer:
-void append_rx_data(const uint8_t data[], ssize_t data_len)
+void rx_data_append(const uint8_t data[], ssize_t data_len)
 {
     // Append incoming data to container:
     rx_data_buff.insert(rx_data_buff.end(), data, data + data_len);
+}
+
+size_t rx_data_pending()
+{
+    return rx_data_buff.size();
 }
 
 static bool process_rx_msg( const proto_data& rx_msg, magnetic_info_t &r);

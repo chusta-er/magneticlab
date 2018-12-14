@@ -44,8 +44,10 @@ struct magnetic_info_t
     {char buff[64]; sprintf(buff, "%.1f", (double)temp1 / 10); return std::string(buff);}
 };
 
-// Append data to rx state machine buffer:
-void append_rx_data(const uint8_t data[], ssize_t data_len);
+// Append data to rx state-machine buffer:
+void rx_data_append(const uint8_t data[], ssize_t data_len);
+// Inform whether there is data in rx buffer remaining:
+size_t rx_data_pending();
 
 // Data processing after being received. This functions is called in the rx process:
 bool process_rx_data(magnetic_info_t &r );

@@ -72,7 +72,7 @@ echo "<script type='text/javascript'>";
 	{
 		// Etiquetas del eje X, para que quede bien la escala debe tenerse en cuenta los datos que representa por hora con la variable i
 		echo "myChart.setLabelX([$i, '$j']);";
-		//echo "myChart.setTooltip([$i, 'H = $arr2[$i]']);"; //(Etiquetas con valores en cada hora)
+		//echo "myChart.setTooltip([$i, 'Bx = $arr2[$i]']);"; //(Etiquetas con valores en cada hora)
 		$i = $i+2; //(Dependiendo el valor que le sumemos a i, será la escala para las etiquetas, el valor sumado será el número de datos que se representa por hora
 		$j++;
 	}
