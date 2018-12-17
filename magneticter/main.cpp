@@ -430,7 +430,8 @@ static void get_gps_db_info(gps_db_info_t &gi)
 
              } while (bookend2 != bookend1);
 
-          if ( (gps_d_set & STATUS_SET) && (gps_d_status == STATUS_FIX) &&
+          if ( //(gps_d_set & STATUS_SET) &&
+               gps_d_status == STATUS_FIX &&
                isnormal(fix_altitude) && isnormal(fix_latitude) && isnormal(fix_longitude) )
              {
              gi.utc_time  = fix_time;
