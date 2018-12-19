@@ -142,6 +142,10 @@ startup: // label to jump to, on SIGHUP or startup errors.
        goto cleanup;
        }
 
+    // -- Input modes - clear indicated ones giving: no break, no CR to NL,
+    // no parity check, no strip char, no start/stop output (sic) control
+    uart_options.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
+
     // -- Enable the receiver and set local mode ...
     uart_options.c_cflag |= (CLOCAL | CREAD);
     // -- Set 8N1 mode ...
@@ -150,7 +154,7 @@ startup: // label to jump to, on SIGHUP or startup errors.
     uart_options.c_cflag &= ~CSIZE;
     uart_options.c_cflag |= CS8;
     // -- (input option) choose Raw Input ...
-    uart_options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
+    uart_options.c_lflag &= ~(ICANON | ECHO | ECHOE | IEXTEN | ISIG);
     // -- (output option) raw output is selected by
     // resetting the OPOST optionin the c_oflag member ...
     uart_options.c_oflag &= ~OPOST;
@@ -287,9 +291,9 @@ startup: // label to jump to, on SIGHUP or startup errors.
              {
              char info_time_buff[1024];
 
-             strftime(info_time_buff, sizeof(info_time_buff), "%F %T", localtime(&curr_time.tv_sec));
+             strftime(info_time_buff, sizeof(info_time_buff), "%F %T", gmtime(&curr_time.tv_sec));
 
-             cout << "system time: " << info_time_buff << '.' << setw(6) << setfill('0') << curr_time.tv_usec << endl
+             cout << "UTC time: " << info_time_buff << '.' << setw(6) << setfill('0') << curr_time.tv_usec << endl
                   << "last field: (bx, by, bz) = (" << mi.bx_string()
                      << ", " << mi.by_string()
                      << ", " << mi.bz_string() << ")" << endl

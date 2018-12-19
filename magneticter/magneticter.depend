@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1544784884 source:c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\main.cpp
+1545217655 source:c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\main.cpp
 	"pch.h"
 	"config.h"
 	"magnetometer_info.h"
@@ -37,7 +37,7 @@
 1544784064 c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\magnetometer_info.h
 	<string>
 
-1543832396 source:c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\config.cpp
+1545217151 source:c:\cygwin64\home\vazquezyg\devel\magneticlab\magneticter\config.cpp
 	"pch.h"
 	"config.h"
 	<syslog.h>
