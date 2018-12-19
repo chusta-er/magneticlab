@@ -3,3 +3,4 @@ node_modules/
 magneticter/obj/
 *.o
 *.gch
+magneticter/bin/Debug/
