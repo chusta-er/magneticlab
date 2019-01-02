@@ -20,12 +20,14 @@
 #include <arpa/inet.h>
 #include <math.h>
 #include <stddef.h>
+#include <uuid/uuid.h>
 
 using namespace std;
 
 // control global program flux:
 static void sig_handler(int signum);
 static inline int  get_exit_condition();
+static inline void set_fork_exit_condition();
 static inline void reset_exit_condition();
 
 // computes basic statistics about received data:
@@ -56,6 +58,8 @@ struct chrony_db_info_t
 
 static bool get_chrony_db_info(int sock_fd, chrony_db_info_t &ci);
 
+#define FORK_EXIT_CONDITION (_NSIG)
+
 int main()
 {
     // configure cout unbuffered. It is the default for cerr:
@@ -70,11 +74,11 @@ int main()
        return (-1);
        }
 
+    uuid_t session_uuid;
+    uuid_generate(session_uuid);
+
     // show startup message.
     cout << "magneticter start." << endl;
-
-    int uart_fd = -1,
-        sock_fd = -1;
 
     sockaddr_in sa;
     memset(&sa, 0, sizeof(sa));
@@ -84,13 +88,16 @@ int main()
 
 startup: // label to jump to, on SIGHUP or startup errors.
 
+    int uart_fd = -1,
+        sock_fd = -1;
+
     initialize_rx_statistics();
     reset_rx_state();
 
     // Data to retrieve from sensors:
-    magnetic_info_t  mi; // (def constructo)
-    gps_db_info_t    gi; // (def constructo)
-    chrony_db_info_t ci; // (def constructo)
+    magnetic_info_t  mi; // (def. constructor)
+    gps_db_info_t    gi; // (def. constructor)
+    chrony_db_info_t ci; // (def. constructor)
 
     if ( !load_config() )
        {
@@ -191,31 +198,22 @@ startup: // label to jump to, on SIGHUP or startup errors.
     do {
 
        // Relinquish the processor for better global behavior and
-       // time alignment to 500 milliseconds. Info lost during this
-       // time can be safely ignored:
+       // real time alignment to 500 milliseconds. Info lost during
+       // this time can be safely ignored:
        //
 
+       static timeval last_db_time = {0,0};
        timeval curr_time;
+
        // -- Get current time with microsecond resolution:
        gettimeofday(&curr_time, 0);
-       // -- Align time to next half second:
+       // -- Align time to next global (real) half second:
        __suseconds_t wait_usecs = (curr_time.tv_usec >= 500000) ?
                                   (1000000 - curr_time.tv_usec) :
                                   ((500000 - curr_time.tv_usec));
 
        if ( 0 > usleep(wait_usecs) )
           continue;
-
-       // -- Get current time again, for informational purposes:
-       gettimeofday(&curr_time, 0);
-
-       // -----
-       // "raw_time" can be used to correct time in samples already stored in
-       // database that were taken when system time was not synchronized
-       // with GPS subsystem.
-       // -----
-       timespec raw_monot_time;
-       clock_gettime(CLOCK_MONOTONIC_RAW, &raw_monot_time);
 
        uint8_t buffer[4096];
        double  bps, fps;
@@ -277,16 +275,61 @@ startup: // label to jump to, on SIGHUP or startup errors.
           }
        // ... (append to vector IF CHANGED)
 
-       // WAIT FOR PLANNED TIME (every 15 min), GET STATISTICS FROM DATA,
-       // INSERT EVERYTHING IN DB (AFTER FORK), AND CLEANUP DATA VECTORS
-       //
-       // ...
-       //
 
-       // Log stats every 3s if available mi or gi; every 5 secs otherwise:
+       // Get current time again, for timed actions:
+       gettimeofday(&curr_time, 0);
+       // -- initialize last_db_time
+       if ( last_db_time.tv_sec == 0 ) last_db_time = curr_time;
+
+       // -- -----
+       // -- "raw time" can be used to correct time in samples already stored in
+       // -- database that were taken when system time was not synchronized
+       // -- with GPS subsystem.
+       // -- -----
+       timespec raw_monot_time;
+       clock_gettime(CLOCK_MONOTONIC_RAW, &raw_monot_time);
+
+       // ---------------------------------------------------------------
+       // WAIT FOR PLANNED TIME (every 15 min) and:
+       // - GET STATISTICS FROM DATA,
+       // - INSERT EVERYTHING IN DB (IN A FORKED CHILD).
+       // - CLEANUP DATA VECTORS.
+       // - Terminate the subprocess setting the exit condition to FORK_EXIT_CONDITION
+       // - ...
+       //
+       tm *curr_time_tm = gmtime(&curr_time.tv_sec);
+
+       if ( ((curr_time_tm->tm_sec % 30 == 0) &&
+             (curr_time.tv_usec < 500000)) ||
+            (curr_time.tv_sec - last_db_time.tv_sec >= 30) )
+          {
+          double stat_lap_time = ((double)curr_time.tv_sec + (double)curr_time.tv_usec * 1.e-6) -
+                                 ((double)last_db_time.tv_sec + (double)last_db_time.tv_usec * 1.e-6);
+
+          // ...
+
+          last_db_time = curr_time;
+
+          if ( LOG_NOTICE <= get_log_level() )
+             {
+
+             char info_time_buff[1024];
+
+             strftime(info_time_buff, sizeof(info_time_buff), "%F %T", curr_time_tm);
+             cout << " =====================================\n"
+                  << info_time_buff << '.' << setw(6) << setfill('0') << curr_time.tv_usec
+                  << " (" << setprecision(7) << stat_lap_time << " secs elapsed)"
+                  << " ==> Launching DB storage subprocess !\n"
+                  << " =====================================\n";
+             }
+
+          //set_fork_exit_condition();
+          }
+
+       // Main actions are done; now show short-term stats:
        if ( LOG_INFO <= get_log_level() )
           {
-          // force rx stats (each 3s) only when valid magneto. data available:
+          // rx stats are generated each 4s:
           if ( get_rx_statistics(bps, fps) )
              {
              char info_time_buff[1024];
@@ -327,14 +370,19 @@ cleanup: // This point can be reached after a normal execution or directly
     if ( -1 != sock_fd ) close(sock_fd);
     if ( -1 != uart_fd ) close(uart_fd);
 
-    if ( get_exit_condition() != SIGTERM && get_exit_condition() != SIGINT )
+    if ( get_exit_condition() != SIGTERM &&
+         get_exit_condition() != SIGINT  &&
+         get_exit_condition() != FORK_EXIT_CONDITION )
        {
        if ( get_exit_condition() == SIGHUP ) cout << "magneticter: configuration reload.\n";
        reset_exit_condition();
        goto startup;
        }
 
-    cout << "magneticter end.\n";
+    if ( get_exit_condition() != FORK_EXIT_CONDITION )
+       cout << "magneticter end.\n";
+    else if ( LOG_NOTICE <= get_log_level() )
+            cout << "magneticter DB subprocess ends.\n";
 
     return 0;
 }
@@ -346,7 +394,8 @@ cleanup: // This point can be reached after a normal execution or directly
 static int exit_condition = 0;
 
 static inline void reset_exit_condition() {exit_condition = 0;}
-static inline int get_exit_condition() {return exit_condition;}
+static inline void set_fork_exit_condition() {exit_condition = FORK_EXIT_CONDITION;}
+static inline int  get_exit_condition() {return exit_condition;}
 
 static void sig_handler(int signum)
 {
@@ -415,7 +464,7 @@ static void get_gps_db_info(gps_db_info_t &gi)
           {
           int bookend1, bookend2;
 
-          gps_mask_t gps_d_set;
+          //gps_mask_t gps_d_set;
           int        gps_d_status;
           time_t     fix_time;
           float      fix_altitude, fix_latitude, fix_longitude;
@@ -423,7 +472,7 @@ static void get_gps_db_info(gps_db_info_t &gi)
           do {
              bookend1 = mem->bookend1;
 
-             gps_d_set = mem->gpsdata.set;
+             //gps_d_set = mem->gpsdata.set;
              gps_d_status = mem->gpsdata.status;
              fix_time  = (time_t)mem->gpsdata.fix.time;
              fix_altitude  = (float)mem->gpsdata.fix.altitude;

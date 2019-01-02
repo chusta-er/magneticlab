@@ -37,6 +37,7 @@
 		</Compiler>
 		<Linker>
 			<Add library="gps" />
+			<Add library="uuid" />
 		</Linker>
 		<ExtraCommands>
 			<Add after="C:\cygwin64\bin\scp $(TARGET_OUTPUT_FILE) tesla@magneticlab.inta.es:./$(TARGET_OUTPUT_BASENAME)" />
