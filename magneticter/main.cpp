@@ -1,26 +1,24 @@
 #include "pch.h"
 #include "config.h"
-#include "magnetometer_info.h"
+#include "dbsave.h"
 
 #include "candm.h"
 
 #include <unistd.h>   // UNIX standard function definitions
 #include <fcntl.h>    // File control definitions
 #include <termios.h>  // POSIX terminal control definitions
-#include <sys/time.h> // POSIX time definitions
 #include <syslog.h>
 #include <signal.h>
 #include <string.h>
 #include <gps.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
-#include <time.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <math.h>
 #include <stddef.h>
-#include <uuid/uuid.h>
+#include <sys/wait.h>
 
 using namespace std;
 
@@ -35,27 +33,7 @@ static void initialize_rx_statistics();
 static void update_rx_statistics(size_t new_bytes, size_t new_frames);
 static bool get_rx_statistics(double &bps, double &fps);
 
-struct gps_db_info_t
-{
-    time_t utc_time;
-    float  latitute, longitude, altitude;
-
-    gps_db_info_t() :
-    utc_time(0), latitute(0), longitude(0), altitude(0) {}
-};
-
 static void get_gps_db_info(gps_db_info_t &gi);
-
-struct chrony_db_info_t
-{
-    int    stratum;
-    time_t ref_time_utc;
-    double last_offset;
-    double rms_offset;
-
-    chrony_db_info_t() : stratum(0), ref_time_utc(0), last_offset(0), rms_offset(0) {}
-};
-
 static bool get_chrony_db_info(int sock_fd, chrony_db_info_t &ci);
 
 #define FORK_EXIT_CONDITION (_NSIG)
@@ -98,6 +76,9 @@ startup: // label to jump to, on SIGHUP or startup errors.
     magnetic_info_t  mi; // (def. constructor)
     gps_db_info_t    gi; // (def. constructor)
     chrony_db_info_t ci; // (def. constructor)
+
+    vector<gps_db_info_t>   gi_c;
+    vector<magnetic_info_t> mi_c;
 
     if ( !load_config() )
        {
@@ -212,6 +193,9 @@ startup: // label to jump to, on SIGHUP or startup errors.
                                   (1000000 - curr_time.tv_usec) :
                                   ((500000 - curr_time.tv_usec));
 
+       // Let system to remove zombie children:
+       waitpid(WAIT_ANY, NULL, WNOHANG);
+
        if ( 0 > usleep(wait_usecs) )
           continue;
 
@@ -257,14 +241,15 @@ startup: // label to jump to, on SIGHUP or startup errors.
               // add data to stats (one frame):
              update_rx_statistics(0, 1);
              // ... (append to vector)
+             mi_c.push_back((const magnetic_info_t &)mi);
              }
           rx_size_after = rx_data_pending();
 
           } while ( rx_size_after < rx_size_before );
 
-       // Retrieve last received GPS info:
+       // Retrieve last received GPS info and append it to vector:
        get_gps_db_info(gi);
-       // ... (append to vector IF CHANGED)
+       gi_c.push_back((const gps_db_info_t &)gi);
 
        // Retrieve last chrony state:
        if ( !get_chrony_db_info(sock_fd, ci) )
@@ -273,8 +258,6 @@ startup: // label to jump to, on SIGHUP or startup errors.
           sleep(5);
           goto cleanup;
           }
-       // ... (append to vector IF CHANGED)
-
 
        // Get current time again, for timed actions:
        gettimeofday(&curr_time, 0);
@@ -289,44 +272,7 @@ startup: // label to jump to, on SIGHUP or startup errors.
        timespec raw_monot_time;
        clock_gettime(CLOCK_MONOTONIC_RAW, &raw_monot_time);
 
-       // ---------------------------------------------------------------
-       // WAIT FOR PLANNED TIME (every 15 min) and:
-       // - GET STATISTICS FROM DATA,
-       // - INSERT EVERYTHING IN DB (IN A FORKED CHILD).
-       // - CLEANUP DATA VECTORS.
-       // - Terminate the subprocess setting the exit condition to FORK_EXIT_CONDITION
-       // - ...
-       //
-       tm *curr_time_tm = gmtime(&curr_time.tv_sec);
-
-       if ( ((curr_time_tm->tm_sec % 30 == 0) &&
-             (curr_time.tv_usec < 500000)) ||
-            (curr_time.tv_sec - last_db_time.tv_sec >= 30) )
-          {
-          double stat_lap_time = ((double)curr_time.tv_sec + (double)curr_time.tv_usec * 1.e-6) -
-                                 ((double)last_db_time.tv_sec + (double)last_db_time.tv_usec * 1.e-6);
-
-          // ...
-
-          last_db_time = curr_time;
-
-          if ( LOG_NOTICE <= get_log_level() )
-             {
-
-             char info_time_buff[1024];
-
-             strftime(info_time_buff, sizeof(info_time_buff), "%F %T", curr_time_tm);
-             cout << " =====================================\n"
-                  << info_time_buff << '.' << setw(6) << setfill('0') << curr_time.tv_usec
-                  << " (" << setprecision(7) << stat_lap_time << " secs elapsed)"
-                  << " ==> Launching DB storage subprocess !\n"
-                  << " =====================================\n";
-             }
-
-          //set_fork_exit_condition();
-          }
-
-       // Main actions are done; now show short-term stats:
+       // Show short-term stats:
        if ( LOG_INFO <= get_log_level() )
           {
           // rx stats are generated each 4s:
@@ -360,6 +306,63 @@ startup: // label to jump to, on SIGHUP or startup errors.
              }
           }
 
+       // ---------------------------------------------------------------
+       // WAIT FOR PLANNED TIME (every 15 min) and:
+       // - GET STATISTICS FROM DATA (IN A FORKED CHILD).
+       // - INSERT EVERYTHING IN DB (IN A FORKED CHILD).
+       // - CLEANUP DATA VECTORS.
+       // - The subprocess terminates setting the exit condition to
+       //   FORK_EXIT_CONDITION
+       tm *curr_time_tm = gmtime(&curr_time.tv_sec);
+
+       if ( ((curr_time_tm->tm_sec % 30 == 0) &&
+             (curr_time.tv_usec < 500000)) ||
+            (curr_time.tv_sec - last_db_time.tv_sec >= 30) )
+          {
+          double stat_lap_time = ((double)curr_time.tv_sec + (double)curr_time.tv_usec * 1.e-6) -
+                                 ((double)last_db_time.tv_sec + (double)last_db_time.tv_usec * 1.e-6);
+
+          pid_t pid = fork();
+          if ( -1 == pid )
+             {
+             cerr << "Cannot fork db insertion child process!" << endl;
+             sleep(5);
+             goto cleanup;
+             }
+
+          if ( 0 != pid )
+             {
+             // Parent process:
+             if ( LOG_NOTICE <= get_log_level() )
+                {
+                char info_time_buff[1024];
+
+                strftime(info_time_buff, sizeof(info_time_buff), "%F %T", curr_time_tm);
+                cout << " =====================================\n "
+                     << info_time_buff << '.' << setw(6) << setfill('0') << curr_time.tv_usec
+                     << " (" << setprecision(7) << stat_lap_time << " secs elapsed)\n"
+                     << " Launched DB storage subprocess (pid=" << pid << ")\n"
+                     << " B field samples: " << mi_c.size() << ", GPS samples: " << gi_c.size() << "\n"
+                     << " =====================================\n";
+                }
+             // Reset data:
+             mi_c.clear();
+             gi_c.clear();
+
+             // Update last fork time:
+             last_db_time = curr_time;
+             }
+          else {
+               // --------------
+               // Child process:
+               // --------------
+
+               put_into_db(session_uuid, curr_time, raw_monot_time, ci, gi_c, mi_c);
+               set_fork_exit_condition();
+               continue; // just in case ...
+               }
+          }
+
        } while ( !get_exit_condition() );
 
 cleanup: // This point can be reached after a normal execution or directly
@@ -382,7 +385,7 @@ cleanup: // This point can be reached after a normal execution or directly
     if ( get_exit_condition() != FORK_EXIT_CONDITION )
        cout << "magneticter end.\n";
     else if ( LOG_NOTICE <= get_log_level() )
-            cout << "magneticter DB subprocess ends.\n";
+            cout << "\n == magneticter DB subprocess ends ==\n";
 
     return 0;
 }
@@ -465,9 +468,9 @@ static void get_gps_db_info(gps_db_info_t &gi)
           int bookend1, bookend2;
 
           //gps_mask_t gps_d_set;
-          int        gps_d_status;
-          time_t     fix_time;
-          float      fix_altitude, fix_latitude, fix_longitude;
+          int    gps_d_status;
+          time_t fix_time;
+          float  fix_altitude, fix_latitude, fix_longitude;
 
           do {
              bookend1 = mem->bookend1;

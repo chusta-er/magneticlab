@@ -48,6 +48,10 @@
 		<Unit filename="config.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="dbsave.cpp" />
+		<Unit filename="dbsave.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="magnetometer_info.cpp" />
 		<Unit filename="magnetometer_info.h">
 			<Option target="&lt;{~None~}&gt;" />

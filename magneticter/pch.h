@@ -3,5 +3,6 @@
 
 #include <iostream>
 #include <iomanip>
+#include <vector>
 
 #endif // PCH_H_INCLUDED
