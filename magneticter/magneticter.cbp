@@ -38,10 +38,14 @@
 		<Linker>
 			<Add library="gps" />
 			<Add library="uuid" />
+			<Add library="pq" />
 		</Linker>
 		<ExtraCommands>
-			<Add after="C:\cygwin64\bin\scp $(TARGET_OUTPUT_FILE) tesla@magneticlab.inta.es:./$(TARGET_OUTPUT_BASENAME)" />
-			<Add after="C:\cygwin64\bin\ssh tesla@magneticlab.inta.es chmod a+x ~/$(TARGET_OUTPUT_BASENAME)" />
+			<Add after='C:\cygwin64\bin\ssh tesla@magneticlab &quot;echo \(ga166\)|sudo -S rm -f $(TARGET_OUTPUT_BASENAME)&quot;' />
+			<Add after="C:\cygwin64\bin\scp $(TARGET_OUTPUT_FILE) tesla@magneticlab:./$(TARGET_OUTPUT_BASENAME)" />
+			<Add after='C:\cygwin64\bin\ssh tesla@magneticlab &quot;echo \(ga166\)|sudo -S chown magneticter:magneticter ~/$(TARGET_OUTPUT_BASENAME)&quot;' />
+			<Add after='C:\cygwin64\bin\ssh tesla@magneticlab &quot;echo \(ga166\)|sudo -S chmod a+s ~/$(TARGET_OUTPUT_BASENAME)&quot;' />
+			<Add after='C:\cygwin64\bin\ssh tesla@172.30.6.10 &quot;echo \(ga166\)|sudo -S chmod a+x ~/$(TARGET_OUTPUT_BASENAME)&quot;' />
 		</ExtraCommands>
 		<Unit filename="candm.h" />
 		<Unit filename="config.cpp" />
@@ -63,7 +67,7 @@
 			<envvars />
 			<debugger>
 				<remote_debugging>
-					<options conn_type="0" serial_baud="115200" ip_address="magneticlab.inta.es" ip_port="9999" />
+					<options conn_type="0" serial_baud="115200" ip_address="localhost" ip_port="9999" additional_cmds="# set follow-fork-mode child" />
 				</remote_debugging>
 			</debugger>
 			<lib_finder disable_auto="1" />

@@ -94,7 +94,8 @@ startup: // label to jump to, on SIGHUP or startup errors.
 
     if ( -1 == uart_fd )
        {
-       cerr << "Cannot open UART port (" << get_comm_device_name() << ")!" << endl;
+       cerr << "Cannot open UART port (" << get_comm_device_name() << ": "
+            << errno << ")!" << endl;
        sleep(5);
        goto cleanup;
        }
@@ -184,7 +185,10 @@ startup: // label to jump to, on SIGHUP or startup errors.
        //
 
        static timeval last_db_time = {0,0};
-       timeval curr_time;
+
+       timeval  curr_time;
+       timespec raw_monot_time;
+
 
        // -- Get current time with microsecond resolution:
        gettimeofday(&curr_time, 0);
@@ -248,6 +252,7 @@ startup: // label to jump to, on SIGHUP or startup errors.
           } while ( rx_size_after < rx_size_before );
 
        // Retrieve last received GPS info and append it to vector:
+       // (GPS info is not considered critical)
        get_gps_db_info(gi);
        gi_c.push_back((const gps_db_info_t &)gi);
 
@@ -269,7 +274,6 @@ startup: // label to jump to, on SIGHUP or startup errors.
        // -- database that were taken when system time was not synchronized
        // -- with GPS subsystem.
        // -- -----
-       timespec raw_monot_time;
        clock_gettime(CLOCK_MONOTONIC_RAW, &raw_monot_time);
 
        // Show short-term stats:
@@ -457,48 +461,46 @@ static bool get_rx_statistics(double &bps, double &fps)
 static void get_gps_db_info(gps_db_info_t &gi)
 {
     int shmid = shmget(GPSD_KEY, sizeof(gps_data_t), 0666);
-    if ( shmid != -1 )
+    if ( shmid < 0 ) return;
+
+    typedef struct {int bookend1; gps_data_t gpsdata; int bookend2;} shmem_t;
+
+    shmem_t *mem = (shmem_t *)shmat(shmid, 0, 0);
+
+    if ( (long)mem < 0 ) return;
+
+    int bookend1, bookend2;
+
+    //gps_mask_t gps_d_set;
+    int    gps_d_status;
+    time_t fix_time;
+    float  fix_altitude, fix_latitude, fix_longitude;
+
+    do {
+       bookend1 = mem->bookend1;
+
+       //gps_d_set = mem->gpsdata.set;
+       gps_d_status = mem->gpsdata.status;
+       fix_time  = (time_t)mem->gpsdata.fix.time;
+       fix_altitude  = (float)mem->gpsdata.fix.altitude;
+       fix_latitude  = (float)mem->gpsdata.fix.latitude;
+       fix_longitude = (float)mem->gpsdata.fix.longitude;
+
+       bookend2 = mem->bookend2;
+
+       } while (bookend2 != bookend1);
+
+    if ( //(gps_d_set & STATUS_SET) &&
+         gps_d_status == STATUS_FIX &&
+         isnormal(fix_altitude) && isnormal(fix_latitude) && isnormal(fix_longitude) )
        {
-       typedef struct {int bookend1; gps_data_t gpsdata; int bookend2;} shmem_t;
-
-       shmem_t *mem = (shmem_t *)shmat(shmid, 0, 0);
-
-       if ( (int)(long)mem != -1 )
-          {
-          int bookend1, bookend2;
-
-          //gps_mask_t gps_d_set;
-          int    gps_d_status;
-          time_t fix_time;
-          float  fix_altitude, fix_latitude, fix_longitude;
-
-          do {
-             bookend1 = mem->bookend1;
-
-             //gps_d_set = mem->gpsdata.set;
-             gps_d_status = mem->gpsdata.status;
-             fix_time  = (time_t)mem->gpsdata.fix.time;
-             fix_altitude  = (float)mem->gpsdata.fix.altitude;
-             fix_latitude  = (float)mem->gpsdata.fix.latitude;
-             fix_longitude = (float)mem->gpsdata.fix.longitude;
-
-             bookend2 = mem->bookend2;
-
-             } while (bookend2 != bookend1);
-
-          if ( //(gps_d_set & STATUS_SET) &&
-               gps_d_status == STATUS_FIX &&
-               isnormal(fix_altitude) && isnormal(fix_latitude) && isnormal(fix_longitude) )
-             {
-             gi.utc_time  = fix_time;
-             gi.altitude  = fix_altitude;
-             gi.latitute  = fix_latitude;
-             gi.longitude = fix_longitude;
-             }
-
-          shmdt((const void *)mem);
-          }
+       gi.utc_time  = fix_time;
+       gi.altitude  = fix_altitude;
+       gi.latitute  = fix_latitude;
+       gi.longitude = fix_longitude;
        }
+
+    shmdt((const void *)mem);
 }
 
 #define FLOAT_EXP_BITS 7

@@ -3,7 +3,8 @@
 
 #include <syslog.h>
 
-static const char *comm_device_name = "/dev/ttyUSB0";
+ // --> /dev/ttyUSBx (/dev/ttyUSB0)
+static const char *comm_device_name = "/dev/serial/by-path/platform-3f980000.usb-usb-0:1.3:1.0-port0";
 
 const char * get_comm_device_name() {return comm_device_name;}
 
