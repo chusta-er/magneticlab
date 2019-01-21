@@ -52,8 +52,16 @@ int main()
        return (-1);
        }
 
-    uuid_t session_uuid;
-    uuid_generate(session_uuid);
+    // Initialize a session uuid in string type:
+    string uuid_string;
+    {
+    uuid_t uuid;
+    char   uuid_chr[37];
+    uuid_generate(uuid);
+    uuid_unparse(uuid, uuid_chr);
+    uuid_string = uuid_chr;
+    }
+
 
     // show startup message.
     cout << "magneticter start." << endl;
@@ -319,6 +327,10 @@ startup: // label to jump to, on SIGHUP or startup errors.
        //   FORK_EXIT_CONDITION
        tm *curr_time_tm = gmtime(&curr_time.tv_sec);
 
+//       if ( ((curr_time_tm->tm_min % 15 == 0) &&
+//             (curr_time_tm->tm_sec == 0) &&
+//             (curr_time.tv_usec < 500000)) ||
+//            (curr_time.tv_sec - last_db_time.tv_sec >= 15 * 60) )
        if ( ((curr_time_tm->tm_sec % 30 == 0) &&
              (curr_time.tv_usec < 500000)) ||
             (curr_time.tv_sec - last_db_time.tv_sec >= 30) )
@@ -361,7 +373,7 @@ startup: // label to jump to, on SIGHUP or startup errors.
                // Child process:
                // --------------
 
-               put_into_db(session_uuid, curr_time, raw_monot_time, ci, gi_c, mi_c);
+               put_into_db(uuid_string, curr_time, raw_monot_time, ci, gi_c, mi_c);
                set_fork_exit_condition();
                continue; // just in case ...
                }

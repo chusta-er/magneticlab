@@ -45,7 +45,7 @@
 			<Add after="C:\cygwin64\bin\scp $(TARGET_OUTPUT_FILE) tesla@magneticlab:./$(TARGET_OUTPUT_BASENAME)" />
 			<Add after='C:\cygwin64\bin\ssh tesla@magneticlab &quot;echo \(ga166\)|sudo -S chown magneticter:magneticter ~/$(TARGET_OUTPUT_BASENAME)&quot;' />
 			<Add after='C:\cygwin64\bin\ssh tesla@magneticlab &quot;echo \(ga166\)|sudo -S chmod a+s ~/$(TARGET_OUTPUT_BASENAME)&quot;' />
-			<Add after='C:\cygwin64\bin\ssh tesla@172.30.6.10 &quot;echo \(ga166\)|sudo -S chmod a+x ~/$(TARGET_OUTPUT_BASENAME)&quot;' />
+			<Add after='C:\cygwin64\bin\ssh tesla@magneticlab &quot;echo \(ga166\)|sudo -S chmod a+x ~/$(TARGET_OUTPUT_BASENAME)&quot;' />
 		</ExtraCommands>
 		<Unit filename="candm.h" />
 		<Unit filename="config.cpp" />

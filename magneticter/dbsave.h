@@ -29,8 +29,9 @@ struct chrony_db_info_t
 };
 
 // Function that performs the db insertion prelude:
-void put_into_db( const uuid_t &uuid, const timeval &curr_time, const timespec &raw_monot_time,
-                  const chrony_db_info_t &ci,
-                  const std::vector<gps_db_info_t> &gi_c, const std::vector<magnetic_info_t> &mi_c );
+void put_into_db( const std::string &uuid_string, const timeval &curr_time,
+                  const timespec &raw_monot_time, const chrony_db_info_t &ci,
+                  const std::vector<gps_db_info_t> &gi_c,
+                  const std::vector<magnetic_info_t> &mi_c );
 
 #endif // DBSAVE_H_INCLUDED
