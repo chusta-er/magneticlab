@@ -34,7 +34,17 @@ void put_into_db( const std::string &uuid_string, const timeval &curr_time,
 
     if ( CONNECTION_OK != conn_stat ) {PQfinish(conn); return;}
 
+/* ---------------------------------------------
+    int median(vector<int> &v)
+{
+    size_t n = v.size() / 2;
+    nth_element(v.begin(), v.begin()+n, v.end());
+    return v[n];
+}
+   --------------------------------------------- */
+
     int b_mean = 0,
+        b_std = 0,
         b_median = 0,
         b_median_x = 0,
         b_median_y = 0,
@@ -48,14 +58,17 @@ void put_into_db( const std::string &uuid_string, const timeval &curr_time,
         b_max_y = 0,
         b_max_z = 0,
         b_x_mean = 0,
+        b_x_std = 0,
         b_x_median = 0,
         b_x_max = 0,
         b_x_min = 0,
         b_y_mean = 0,
+        b_y_std = 0,
         b_y_median = 0,
         b_y_max = 0,
         b_y_min = 0,
         b_z_mean = 0,
+        b_z_std = 0,
         b_z_median = 0,
         b_z_max = 0,
         b_z_min = 0;
@@ -70,13 +83,96 @@ void put_into_db( const std::string &uuid_string, const timeval &curr_time,
           sys_temp_max = 1,
           sys_temp_med = 1;
 
+/*
+    -- execution uuid
+    instance       UUID,
+
+    -- timing info.
+    timer_secs     BIGINT,
+    timer_nsecs    BIGINT,
+    sys_time_secs  BIGINT,
+    sys_time_usecs INTEGER,
+
+    -- magnetic info.
+    num_samples_b  INTEGER,
+    b_mean         INTEGER,
+    b_std          INTEGER,
+    b_median       INTEGER,
+    b_median_x     INTEGER,
+    b_median_y     INTEGER,
+    b_median_z     INTEGER,
+    b_min          INTEGER,
+    b_min_x        INTEGER,
+    b_min_y        INTEGER,
+    b_min_z        INTEGER,
+    b_max          INTEGER,
+    b_max_x        INTEGER,
+    b_max_y        INTEGER,
+    b_max_z        INTEGER,
+    b_x_mean       INTEGER,
+    b_x_std        INTEGER,
+    b_x_median     INTEGER,
+    b_x_max        INTEGER,
+    b_x_min        INTEGER,
+    b_y_mean       INTEGER,
+    b_y_std        INTEGER,
+    b_y_median     INTEGER,
+    b_y_max        INTEGER,
+    b_y_min        INTEGER,
+    b_z_mean       INTEGER,
+    b_z_std        INTEGER,
+    b_z_median     INTEGER,
+    b_z_max        INTEGER,
+    b_z_min        INTEGER,
+    sens_temp_min  SMALLINT,
+    sens_temp_max  SMALLINT,
+    sens_temp_med  SMALLINT,
+    bat_min        SMALLINT,
+    bat_max        SMALLINT,
+    bat_med        SMALLINT,
+    sys_temp_min   SMALLINT,
+    sys_temp_max   SMALLINT,
+    sys_temp_med   SMALLINT,
+
+    -- gps info.
+    time_ref_g     INTEGER,
+    num_samples_g  INTEGER,
+    latitute_mean  FLOAT,
+    latitute_std   FLOAT,
+    latitute_med   FLOAT,
+    latitute_min   FLOAT,
+    latitute_max   FLOAT,
+    longitude_mean FLOAT,
+    longitude_std  FLOAT,
+    longitude_med  FLOAT,
+    longitude_min  FLOAT,
+    longitude_max  FLOAT,
+    altitude_mean  FLOAT,
+    altitude_std   FLOAT,
+    altitude_med   FLOAT,
+    altitude_min   FLOAT,
+    altitude_max   FLOAT,
+
+    -- chrony info.
+    time_ref_c  INTEGER,
+    stratum     INTEGER,
+    last_offset REAL,
+    rms_offset  REAL
+*/
+
     string cmd =
     "START TRANSACTION; SELECT insert_full_register('" +
+
+    // execution uuid:
     uuid_string + "'," +
+    // timing info:
     to_string( raw_monot_time.tv_sec ) + "," +
     to_string( raw_monot_time.tv_nsec ) + "," +
     to_string( curr_time.tv_sec ) + "," +
     to_string( curr_time.tv_usec ) + "," +
+
+    // magnetic info:
+
     to_string( mi_c.size() ) + "," +
     to_string( b_mean ) + "," +
     to_string( b_median ) + "," +
@@ -112,6 +208,15 @@ void put_into_db( const std::string &uuid_string, const timeval &curr_time,
     to_string( sys_temp_min ) + "::int2," +
     to_string( sys_temp_max ) + "::int2," +
     to_string( sys_temp_med ) + "::int2" +
+
+    // gps info:
+
+    // ...
+
+    // chrony info:
+
+    // ...
+
     ");COMMIT;";
 
     PGresult *insert_result = PQexec(conn, cmd.c_str());
