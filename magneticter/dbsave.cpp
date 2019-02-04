@@ -43,128 +43,38 @@ void put_into_db( const std::string &uuid_string, const timeval &curr_time,
 }
    --------------------------------------------- */
 
-    int b_mean = 0,
-        b_std = 0,
-        b_median = 0,
-        b_median_x = 0,
-        b_median_y = 0,
-        b_median_z = 0,
-        b_min = 0,
-        b_min_x = 0,
-        b_min_y = 0,
-        b_min_z = 0,
-        b_max = 0,
-        b_max_x = 0,
-        b_max_y = 0,
-        b_max_z = 0,
-        b_x_mean = 0,
-        b_x_std = 0,
-        b_x_median = 0,
-        b_x_max = 0,
-        b_x_min = 0,
-        b_y_mean = 0,
-        b_y_std = 0,
-        b_y_median = 0,
-        b_y_max = 0,
-        b_y_min = 0,
-        b_z_mean = 0,
-        b_z_std = 0,
-        b_z_median = 0,
-        b_z_max = 0,
-        b_z_min = 0;
+    // B info:
+    int b_mean = 0, b_std = 0,
+        b_median = 0, b_median_x = 0, b_median_y = 0, b_median_z = 0,
+        b_min = 0, b_min_x = 0, b_min_y = 0, b_min_z = 0,
+        b_max = 0, b_max_x = 0, b_max_y = 0, b_max_z = 0,
+        b_x_mean = 0, b_x_std = 0, b_x_median = 0, b_x_max = 0, b_x_min = 0,
+        b_y_mean = 0, b_y_std = 0, b_y_median = 0, b_y_max = 0, b_y_min = 0,
+        b_z_mean = 0, b_z_std = 0, b_z_median = 0, b_z_max = 0, b_z_min = 0;
 
-    short sens_temp_min = 1,
-          sens_temp_max = 1,
-          sens_temp_med = 1,
-          bat_min = 1,
-          bat_max = 1,
-          bat_med = 1,
-          sys_temp_min = 1,
-          sys_temp_max = 1,
-          sys_temp_med = 1;
+    short sens_temp_min = 0, sens_temp_max = 0, sens_temp_med = 0,
+          bat_min = 0, bat_max = 0, bat_med = 0,
+          sys_temp_min = 0, sys_temp_max = 0, sys_temp_med = 0;
 
-/*
-    -- execution uuid
-    instance       UUID,
+    // gps info:
+    int time_ref_g = 0, num_g = gi_c.size();
+    float latitute_mean = 0.0, latitute_std = 0.0, latitute_med = 0.0,
+          latitute_min = 0.0, latitute_max = 0.0,
+          longitude_mean = 0.0, longitude_std = 0.0, longitude_med = 0.0,
+          longitude_min = 0.0, longitude_max = 0.0,
+          altitude_mean = 0.0, altitude_std = 0.0, altitude_med = 0.0,
+          altitude_min = 0.0, altitude_max = 0.0;
 
-    -- timing info.
-    timer_secs     BIGINT,
-    timer_nsecs    BIGINT,
-    sys_time_secs  BIGINT,
-    sys_time_usecs INTEGER,
-
-    -- magnetic info.
-    num_samples_b  INTEGER,
-    b_mean         INTEGER,
-    b_std          INTEGER,
-    b_median       INTEGER,
-    b_median_x     INTEGER,
-    b_median_y     INTEGER,
-    b_median_z     INTEGER,
-    b_min          INTEGER,
-    b_min_x        INTEGER,
-    b_min_y        INTEGER,
-    b_min_z        INTEGER,
-    b_max          INTEGER,
-    b_max_x        INTEGER,
-    b_max_y        INTEGER,
-    b_max_z        INTEGER,
-    b_x_mean       INTEGER,
-    b_x_std        INTEGER,
-    b_x_median     INTEGER,
-    b_x_max        INTEGER,
-    b_x_min        INTEGER,
-    b_y_mean       INTEGER,
-    b_y_std        INTEGER,
-    b_y_median     INTEGER,
-    b_y_max        INTEGER,
-    b_y_min        INTEGER,
-    b_z_mean       INTEGER,
-    b_z_std        INTEGER,
-    b_z_median     INTEGER,
-    b_z_max        INTEGER,
-    b_z_min        INTEGER,
-    sens_temp_min  SMALLINT,
-    sens_temp_max  SMALLINT,
-    sens_temp_med  SMALLINT,
-    bat_min        SMALLINT,
-    bat_max        SMALLINT,
-    bat_med        SMALLINT,
-    sys_temp_min   SMALLINT,
-    sys_temp_max   SMALLINT,
-    sys_temp_med   SMALLINT,
-
-    -- gps info.
-    time_ref_g     INTEGER,
-    num_samples_g  INTEGER,
-    latitute_mean  FLOAT,
-    latitute_std   FLOAT,
-    latitute_med   FLOAT,
-    latitute_min   FLOAT,
-    latitute_max   FLOAT,
-    longitude_mean FLOAT,
-    longitude_std  FLOAT,
-    longitude_med  FLOAT,
-    longitude_min  FLOAT,
-    longitude_max  FLOAT,
-    altitude_mean  FLOAT,
-    altitude_std   FLOAT,
-    altitude_med   FLOAT,
-    altitude_min   FLOAT,
-    altitude_max   FLOAT,
-
-    -- chrony info.
-    time_ref_c  INTEGER,
-    stratum     INTEGER,
-    last_offset REAL,
-    rms_offset  REAL
-*/
+    // chrony info:
+    int time_ref_c = 0, stratum = 0;
+    double last_offset = 0.0, rms_offset = 0.0;
 
     string cmd =
     "START TRANSACTION; SELECT insert_full_register('" +
 
     // execution uuid:
     uuid_string + "'," +
+
     // timing info:
     to_string( raw_monot_time.tv_sec ) + "," +
     to_string( raw_monot_time.tv_nsec ) + "," +
@@ -172,50 +82,90 @@ void put_into_db( const std::string &uuid_string, const timeval &curr_time,
     to_string( curr_time.tv_usec ) + "," +
 
     // magnetic info:
-
-    to_string( mi_c.size() ) + "," +
-    to_string( b_mean ) + "," +
-    to_string( b_median ) + "," +
-    to_string( b_median_x ) + "," +
-    to_string( b_median_y ) + "," +
-    to_string( b_median_z ) + "," +
-    to_string( b_min ) + "," +
-    to_string( b_min_x ) + "," +
-    to_string( b_min_y ) + "," +
-    to_string( b_min_z ) + "," +
-    to_string( b_max ) + "," +
-    to_string( b_max_x ) + "," +
-    to_string( b_max_y ) + "," +
-    to_string( b_max_z ) + "," +
-    to_string( b_x_mean ) + "," +
-    to_string( b_x_median ) + "," +
-    to_string( b_x_max ) + "," +
-    to_string( b_x_min ) + "," +
-    to_string( b_y_mean ) + "," +
-    to_string( b_y_median ) + "," +
-    to_string( b_y_max ) + "," +
-    to_string( b_y_min ) + "," +
-    to_string( b_z_mean ) + "," +
-    to_string( b_z_median ) + "," +
-    to_string( b_z_max ) + "," +
-    to_string( b_z_min ) + "," +
-    to_string( sens_temp_min ) + "::int2," +
-    to_string( sens_temp_max ) + "::int2," +
-    to_string( sens_temp_med ) + "::int2," +
-    to_string( bat_min ) + "::int2," +
-    to_string( bat_max ) + "::int2," +
-    to_string( bat_med ) + "::int2," +
-    to_string( sys_temp_min ) + "::int2," +
-    to_string( sys_temp_max ) + "::int2," +
-    to_string( sys_temp_med ) + "::int2" +
+    (mi_c.size() != 0 ?
+                      to_string( mi_c.size() ) + "," +
+                      to_string( b_mean ) + "," +
+                      to_string( b_std ) + "," +
+                      to_string( b_median ) + "," +
+                      to_string( b_median_x ) + "," +
+                      to_string( b_median_y ) + "," +
+                      to_string( b_median_z ) + "," +
+                      to_string( b_min ) + "," +
+                      to_string( b_min_x ) + "," +
+                      to_string( b_min_y ) + "," +
+                      to_string( b_min_z ) + "," +
+                      to_string( b_max ) + "," +
+                      to_string( b_max_x ) + "," +
+                      to_string( b_max_y ) + "," +
+                      to_string( b_max_z ) + "," +
+                      to_string( b_x_mean ) + "," +
+                      to_string( b_x_std ) + "," +
+                      to_string( b_x_median ) + "," +
+                      to_string( b_x_max ) + "," +
+                      to_string( b_x_min ) + "," +
+                      to_string( b_y_mean ) + "," +
+                      to_string( b_y_std ) + "," +
+                      to_string( b_y_median ) + "," +
+                      to_string( b_y_max ) + "," +
+                      to_string( b_y_min ) + "," +
+                      to_string( b_z_mean ) + "," +
+                      to_string( b_z_std ) + "," +
+                      to_string( b_z_median ) + "," +
+                      to_string( b_z_max ) + "," +
+                      to_string( b_z_min ) + "," +
+                      to_string( sens_temp_min ) + "::int2," +
+                      to_string( sens_temp_max ) + "::int2," +
+                      to_string( sens_temp_med ) + "::int2," +
+                      to_string( bat_min ) + "::int2," +
+                      to_string( bat_max ) + "::int2," +
+                      to_string( bat_med ) + "::int2," +
+                      to_string( sys_temp_min ) + "::int2," +
+                      to_string( sys_temp_max ) + "::int2," +
+                      to_string( sys_temp_med ) + "::int2,"
+                      :
+                      string("NULL, NULL, "
+                             "NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "
+                             "NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "
+                             "NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "
+                             "NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "
+                             "NULL, NULL, NULL, NULL, NULL, ")
+    ) +
 
     // gps info:
-
-    // ...
-
+    (time_ref_g != 0 ?
+                     to_string( time_ref_g ) + "," +
+                     to_string( num_g ) + "," +
+                     to_string( latitute_mean ) + "::float4," +
+                     to_string( latitute_std ) + "::float4," +
+                     to_string( latitute_med ) + "::float4," +
+                     to_string( latitute_min ) + "::float4," +
+                     to_string( latitute_max ) + "::float4," +
+                     to_string( longitude_mean ) + "::float4," +
+                     to_string( longitude_std ) + "::float4," +
+                     to_string( longitude_med ) + "::float4," +
+                     to_string( longitude_min ) + "::float4," +
+                     to_string( longitude_max ) + "::float4," +
+                     to_string( altitude_mean ) + "::float4," +
+                     to_string( altitude_std ) + "::float4," +
+                     to_string( altitude_med ) + "::float4," +
+                     to_string( altitude_min ) + "::float4," +
+                     to_string( altitude_max ) + "::float4,"
+                     :
+                     string("NULL, NULL, "
+                            "NULL, NULL, NULL, NULL, "
+                            "NULL, NULL, NULL, NULL, "
+                            "NULL, NULL, NULL, NULL, "
+                            "NULL, NULL, NULL, ")
+    ) +
     // chrony info:
-
-    // ...
+    (time_ref_c != 0 ?
+                     to_string( time_ref_c ) + "," +
+                     to_string( stratum ) + "," +
+                     to_string( last_offset ) + "::float8," +
+                     to_string( rms_offset ) + "::float8"
+                     :
+                     string("NULL, NULL, NULL, NULL")
+    ) +
 
     ");COMMIT;";
 

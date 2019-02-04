@@ -72,29 +72,29 @@ CREATE TABLE IF NOT EXISTS gps_info (
     time_id        INTEGER REFERENCES timing(time_id),
     time_ref       INTEGER NOT NULL,
     num_samples    INTEGER NOT NULL,
-    latitute_mean  FLOAT NOT NULL,
-    latitute_std   FLOAT NOT NULL,
-    latitute_med   FLOAT NOT NULL,
-    latitute_min   FLOAT NOT NULL,
-    latitute_max   FLOAT NOT NULL,
-    longitude_mean FLOAT NOT NULL,
-    longitude_std  FLOAT NOT NULL,
-    longitude_med  FLOAT NOT NULL,
-    longitude_min  FLOAT NOT NULL,
-    longitude_max  FLOAT NOT NULL,
-    altitude_mean  FLOAT NOT NULL,
-    altitude_std   FLOAT NOT NULL,
-    altitude_med   FLOAT NOT NULL,
-    altitude_min   FLOAT NOT NULL,
-    altitude_max   FLOAT NOT NULL
+    latitute_mean  FLOAT4 NOT NULL,
+    latitute_std   FLOAT4 NOT NULL,
+    latitute_med   FLOAT4 NOT NULL,
+    latitute_min   FLOAT4 NOT NULL,
+    latitute_max   FLOAT4 NOT NULL,
+    longitude_mean FLOAT4 NOT NULL,
+    longitude_std  FLOAT4 NOT NULL,
+    longitude_med  FLOAT4 NOT NULL,
+    longitude_min  FLOAT4 NOT NULL,
+    longitude_max  FLOAT4 NOT NULL,
+    altitude_mean  FLOAT4 NOT NULL,
+    altitude_std   FLOAT4 NOT NULL,
+    altitude_med   FLOAT4 NOT NULL,
+    altitude_min   FLOAT4 NOT NULL,
+    altitude_max   FLOAT4 NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS chrony_info (
     time_id     INTEGER REFERENCES timing(time_id),
     time_ref    INTEGER NOT NULL,
     stratum     INTEGER NOT NULL,
-    last_offset REAL NOT NULL,
-    rms_offset  REAL NOT NULL
+    last_offset FLOAT8 NOT NULL,
+    rms_offset  FLOAT8 NOT NULL
 );
 
 CREATE OR REPLACE FUNCTION insert_full_register
@@ -152,27 +152,27 @@ CREATE OR REPLACE FUNCTION insert_full_register
     -- gps info.
     time_ref_g     INTEGER,
     num_samples_g  INTEGER,
-    latitute_mean  FLOAT,
-    latitute_std   FLOAT,
-    latitute_med   FLOAT,
-    latitute_min   FLOAT,
-    latitute_max   FLOAT,
-    longitude_mean FLOAT,
-    longitude_std  FLOAT,
-    longitude_med  FLOAT,
-    longitude_min  FLOAT,
-    longitude_max  FLOAT,
-    altitude_mean  FLOAT,
-    altitude_std   FLOAT,
-    altitude_med   FLOAT,
-    altitude_min   FLOAT,
-    altitude_max   FLOAT,
+    latitute_mean  FLOAT4,
+    latitute_std   FLOAT4,
+    latitute_med   FLOAT4,
+    latitute_min   FLOAT4,
+    latitute_max   FLOAT4,
+    longitude_mean FLOAT4,
+    longitude_std  FLOAT4,
+    longitude_med  FLOAT4,
+    longitude_min  FLOAT4,
+    longitude_max  FLOAT4,
+    altitude_mean  FLOAT4,
+    altitude_std   FLOAT4,
+    altitude_med   FLOAT4,
+    altitude_min   FLOAT4,
+    altitude_max   FLOAT4,
 
     -- chrony info.
     time_ref_c  INTEGER,
     stratum     INTEGER,
-    last_offset REAL,
-    rms_offset  REAL
+    last_offset FLOAT8,
+    rms_offset  FLOAT8
 )
 RETURNS void AS
 $$
@@ -194,29 +194,38 @@ $$
         RETURNING time_id INTO id;
 
         -- Insert B field information
-        INSERT INTO magnetic_info
-        VALUES
-        (id, num_samples_b,
-         b_mean, b_std, b_median, b_median_x, b_median_y, b_median_z, b_min, b_min_x, b_min_y, b_min_z, b_max, b_max_x, b_max_y, b_max_z,
-         b_x_mean, b_x_std, b_x_median, b_x_max, b_x_min,
-         b_y_mean, b_y_std, b_y_median, b_y_max, b_y_min,
-         b_z_mean, b_z_std, b_z_median, b_z_max, b_z_min,
-         sens_temp_min, sens_temp_max, sens_temp_med,
-         bat_min, bat_max, bat_med,
-         sys_temp_min, sys_temp_max, sys_temp_med);
+        IF num_samples_b IS NOT NULL
+        THEN
+            INSERT INTO magnetic_info
+            VALUES
+            (id, num_samples_b,
+             b_mean, b_std, b_median, b_median_x, b_median_y, b_median_z, b_min, b_min_x, b_min_y, b_min_z, b_max, b_max_x, b_max_y, b_max_z,
+             b_x_mean, b_x_std, b_x_median, b_x_max, b_x_min,
+             b_y_mean, b_y_std, b_y_median, b_y_max, b_y_min,
+             b_z_mean, b_z_std, b_z_median, b_z_max, b_z_min,
+             sens_temp_min, sens_temp_max, sens_temp_med,
+             bat_min, bat_max, bat_med,
+             sys_temp_min, sys_temp_max, sys_temp_med);
+        END IF;
 
-        -- Insert gps_info
-        INSERT INTO gps_info
-        VALUES
-        (id, time_ref_g, num_samples_g,
-         latitute_mean, latitute_std, latitute_med, latitute_min, latitute_max,
-         longitude_mean, longitude_std, longitude_med, longitude_min, longitude_max,
-         altitude_mean, altitude_std, altitude_med, altitude_min, altitude_max);
+        -- Insert gps_info, if available
+        IF time_ref_g IS NOT NULL
+        THEN
+            INSERT INTO gps_info
+            VALUES
+            (id, time_ref_g, num_samples_g,
+             latitute_mean, latitute_std, latitute_med, latitute_min, latitute_max,
+             longitude_mean, longitude_std, longitude_med, longitude_min, longitude_max,
+             altitude_mean, altitude_std, altitude_med, altitude_min, altitude_max);
+        END IF;
 
-        -- Insert chrony_info
-        INSERT INTO chrony_info
-        VALUES
-        (id, time_ref_c, stratum, last_offset, rms_offset);
+        -- Insert chrony_info, if available
+        IF time_ref_c IS NOT NULL
+        THEN
+            INSERT INTO chrony_info
+            VALUES
+            (id, time_ref_c, stratum, last_offset, rms_offset);
+        END IF;
 
         RETURN;
     END;

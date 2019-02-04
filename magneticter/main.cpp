@@ -80,11 +80,7 @@ startup: // label to jump to, on SIGHUP or startup errors.
     initialize_rx_statistics();
     reset_rx_state();
 
-    // Data to retrieve from sensors:
-    magnetic_info_t  mi; // (def. constructor)
-    gps_db_info_t    gi; // (def. constructor)
-    chrony_db_info_t ci; // (def. constructor)
-
+    // Containers for sensor data:
     vector<gps_db_info_t>   gi_c;
     vector<magnetic_info_t> mi_c;
 
@@ -197,7 +193,6 @@ startup: // label to jump to, on SIGHUP or startup errors.
        timeval  curr_time;
        timespec raw_monot_time;
 
-
        // -- Get current time with microsecond resolution:
        gettimeofday(&curr_time, 0);
        // -- Align time to next global (real) half second:
@@ -245,6 +240,7 @@ startup: // label to jump to, on SIGHUP or startup errors.
        size_t rx_size_before, rx_size_after;
 
        do {
+          magnetic_info_t mi;
 
           rx_size_before = rx_data_pending();
           // Value returned by process_rx_data informs weather mi has been set.
@@ -261,16 +257,33 @@ startup: // label to jump to, on SIGHUP or startup errors.
 
        // Retrieve last received GPS info and append it to vector:
        // (GPS info is not considered critical)
-       get_gps_db_info(gi);
-       gi_c.push_back((const gps_db_info_t &)gi);
+
+       static gps_db_info_t    gi;    // (def. constructor)
+       static chrony_db_info_t ci;    // (def. constructor)
+       static chrony_db_info_t ci_db; // (def. constructor)
+
+       // Aux vars to analyze returned data from sensors:
+       gps_db_info_t    gi_aux;     // (def. constructor)
+       chrony_db_info_t ci_aux; // (def. constructor)
+
+       // Save the gps sample only if it is not zero and newer from previous one:
+       get_gps_db_info(gi_aux);
+       if ( gi_aux.utc_time && gi_aux.utc_time > gi.utc_time )
+          {
+          gi_c.push_back((const gps_db_info_t &)gi_aux);
+          gi = gi_aux;
+          }
 
        // Retrieve last chrony state:
-       if ( !get_chrony_db_info(sock_fd, ci) )
+       if ( !get_chrony_db_info(sock_fd, ci_aux) )
           {
           cerr << "Cannot request/receive data to/from chrony!" << endl;
           sleep(5);
           goto cleanup;
           }
+       // Save the chrony sample only if it is not zero and newer from previous one:
+       if ( ci_aux.ref_time_utc && ci_aux.stratum == 1 && ci_aux.ref_time_utc > ci.ref_time_utc )
+          ci = ci_aux;
 
        // Get current time again, for timed actions:
        gettimeofday(&curr_time, 0);
@@ -291,6 +304,9 @@ startup: // label to jump to, on SIGHUP or startup errors.
           if ( get_rx_statistics(bps, fps) )
              {
              char info_time_buff[1024];
+
+             magnetic_info_t mi;
+             if ( mi_c.size() ) mi = mi_c.back();
 
              strftime(info_time_buff, sizeof(info_time_buff), "%F %T", gmtime(&curr_time.tv_sec));
 
@@ -338,6 +354,15 @@ startup: // label to jump to, on SIGHUP or startup errors.
           double stat_lap_time = ((double)curr_time.tv_sec + (double)curr_time.tv_usec * 1.e-6) -
                                  ((double)last_db_time.tv_sec + (double)last_db_time.tv_usec * 1.e-6);
 
+          // Prepare chrony info to insert:
+          ci_aux.reset();
+
+          if ( ci_db.ref_time_utc < ci.ref_time_utc )
+             {
+             ci_aux = ci;
+             ci_db = ci;
+             }
+
           pid_t pid = fork();
           if ( -1 == pid )
              {
@@ -358,7 +383,9 @@ startup: // label to jump to, on SIGHUP or startup errors.
                      << info_time_buff << '.' << setw(6) << setfill('0') << curr_time.tv_usec
                      << " (" << setprecision(7) << stat_lap_time << " secs elapsed)\n"
                      << " Launched DB storage subprocess (pid=" << pid << ")\n"
-                     << " B field samples: " << mi_c.size() << ", GPS samples: " << gi_c.size() << "\n"
+                     << " B field samples: " << mi_c.size() << "\n"
+                     << " GPS samples: " << gi_c.size() << "\n"
+                     << " Chrony samples: " << (ci_aux.ref_time_utc ? "1" : "0") << "\n"
                      << " =====================================\n";
                 }
              // Reset data:
@@ -372,8 +399,7 @@ startup: // label to jump to, on SIGHUP or startup errors.
                // --------------
                // Child process:
                // --------------
-
-               put_into_db(uuid_string, curr_time, raw_monot_time, ci, gi_c, mi_c);
+               put_into_db(uuid_string, curr_time, raw_monot_time, ci_aux, gi_c, mi_c);
                set_fork_exit_condition();
                continue; // just in case ...
                }

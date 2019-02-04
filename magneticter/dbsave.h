@@ -13,9 +13,6 @@ struct gps_db_info_t
 
     gps_db_info_t() :
     utc_time(0), latitute(0), longitude(0), altitude(0) {}
-    bool operator != (const gps_db_info_t& o)
-    {return (utc_time != o.utc_time || latitute != o.latitute ||
-             longitude != o.longitude || altitude != o.altitude);}
 };
 
 struct chrony_db_info_t
@@ -25,7 +22,8 @@ struct chrony_db_info_t
     double last_offset;
     double rms_offset;
 
-    chrony_db_info_t() : stratum(0), ref_time_utc(0), last_offset(0), rms_offset(0) {}
+    void reset() {stratum = 0; ref_time_utc= 0; last_offset = 0; rms_offset = 0;}
+    chrony_db_info_t() {reset();}
 };
 
 // Function that performs the db insertion prelude:
