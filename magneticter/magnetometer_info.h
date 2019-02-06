@@ -50,7 +50,7 @@ void rx_data_append(const uint8_t data[], ssize_t data_len);
 size_t rx_data_pending();
 
 // Data processing after being received. This functions is called in the rx process:
-bool process_rx_data(magnetic_info_t &r );
+bool process_rx_data(magnetic_info_t &r);
 // Initializes the reception state-machine:
 void reset_rx_state();
 

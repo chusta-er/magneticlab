@@ -9,7 +9,7 @@
 struct gps_db_info_t
 {
     time_t utc_time;
-    float  latitute, longitude, altitude;
+    double latitute, longitude, altitude;
 
     gps_db_info_t() :
     utc_time(0), latitute(0), longitude(0), altitude(0) {}

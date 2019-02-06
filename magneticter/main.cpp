@@ -512,7 +512,7 @@ static void get_gps_db_info(gps_db_info_t &gi)
     //gps_mask_t gps_d_set;
     int    gps_d_status;
     time_t fix_time;
-    float  fix_altitude, fix_latitude, fix_longitude;
+    double fix_altitude, fix_latitude, fix_longitude;
 
     do {
        bookend1 = mem->bookend1;
@@ -520,9 +520,9 @@ static void get_gps_db_info(gps_db_info_t &gi)
        //gps_d_set = mem->gpsdata.set;
        gps_d_status = mem->gpsdata.status;
        fix_time  = (time_t)mem->gpsdata.fix.time;
-       fix_altitude  = (float)mem->gpsdata.fix.altitude;
-       fix_latitude  = (float)mem->gpsdata.fix.latitude;
-       fix_longitude = (float)mem->gpsdata.fix.longitude;
+       fix_altitude  = mem->gpsdata.fix.altitude;
+       fix_latitude  = mem->gpsdata.fix.latitude;
+       fix_longitude = mem->gpsdata.fix.longitude;
 
        bookend2 = mem->bookend2;
 
