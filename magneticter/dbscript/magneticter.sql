@@ -72,11 +72,11 @@ CREATE TABLE IF NOT EXISTS gps_info (
     time_id        INTEGER REFERENCES timing(time_id),
     time_ref       INTEGER NOT NULL,
     num_samples    INTEGER NOT NULL,
-    latitute_mean  FLOAT8 NOT NULL,
-    latitute_std   FLOAT8 NOT NULL,
-    latitute_med   FLOAT8 NOT NULL,
-    latitute_min   FLOAT8 NOT NULL,
-    latitute_max   FLOAT8 NOT NULL,
+    latitude_mean  FLOAT8 NOT NULL,
+    latitude_std   FLOAT8 NOT NULL,
+    latitude_med   FLOAT8 NOT NULL,
+    latitude_min   FLOAT8 NOT NULL,
+    latitude_max   FLOAT8 NOT NULL,
     longitude_mean FLOAT8 NOT NULL,
     longitude_std  FLOAT8 NOT NULL,
     longitude_med  FLOAT8 NOT NULL,
@@ -152,11 +152,11 @@ CREATE OR REPLACE FUNCTION insert_full_register
     -- gps info.
     time_ref_g     INTEGER,
     num_samples_g  INTEGER,
-    latitute_mean  FLOAT8,
-    latitute_std   FLOAT8,
-    latitute_med   FLOAT8,
-    latitute_min   FLOAT8,
-    latitute_max   FLOAT8,
+    latitude_mean  FLOAT8,
+    latitude_std   FLOAT8,
+    latitude_med   FLOAT8,
+    latitude_min   FLOAT8,
+    latitude_max   FLOAT8,
     longitude_mean FLOAT8,
     longitude_std  FLOAT8,
     longitude_med  FLOAT8,
@@ -215,7 +215,7 @@ $$
             INSERT INTO gps_info
             VALUES
             (id, time_ref_g, num_samples_g,
-             latitute_mean, latitute_std, latitute_med, latitute_min, latitute_max,
+             latitude_mean, latitude_std, latitude_med, latitude_min, latitude_max,
              longitude_mean, longitude_std, longitude_med, longitude_min, longitude_max,
              altitude_mean, altitude_std, altitude_med, altitude_min, altitude_max);
         END IF;

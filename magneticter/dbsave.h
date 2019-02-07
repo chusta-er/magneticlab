@@ -9,10 +9,10 @@
 struct gps_db_info_t
 {
     time_t utc_time;
-    double latitute, longitude, altitude;
+    double latitude, longitude, altitude;
 
     gps_db_info_t() :
-    utc_time(0), latitute(0), longitude(0), altitude(0) {}
+    utc_time(0), latitude(0), longitude(0), altitude(0) {}
 };
 
 struct chrony_db_info_t

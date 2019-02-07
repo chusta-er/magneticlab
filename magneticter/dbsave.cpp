@@ -73,7 +73,7 @@ void put_into_db( const std::string &uuid_string, const timeval &curr_time,
     multimap<double, size_t> b_map, bx_map, by_map, bz_map;
     multimap<float, size_t> sens_temp_map, bat_map, sys_temp_map;
 
-    for ( size_t i = 0; i < mi_c.size(); i++ )
+    for ( size_t i = 0; i < (size_t)num_b; i++ )
         {
         auto &mi = mi_c[i];
 
@@ -121,7 +121,7 @@ void put_into_db( const std::string &uuid_string, const timeval &curr_time,
     b_x_mean /= num_b; b_y_mean /= num_b; b_z_mean /= num_b; b_mean /= num_b;
 
     // - get standard deviations:
-    for ( size_t i = 0; i < mi_c.size(); i++ )
+    for ( size_t i = 0; i < (size_t)num_b; i++ )
         {
         auto &mi = mi_c[i];
         double b = sqrt(double(mi.bx)*double(mi.bx) + double(mi.by)*double(mi.by) + double(mi.bz)*double(mi.bz));
@@ -163,12 +163,60 @@ void put_into_db( const std::string &uuid_string, const timeval &curr_time,
 
     // gps stats:
     int num_g = gi_c.size(), time_ref_g = 0;
-    double latitute_mean = 0.0, latitute_std = 0.0, latitute_med = 0.0,
-          latitute_min = 0.0, latitute_max = 0.0,
-          longitude_mean = 0.0, longitude_std = 0.0, longitude_med = 0.0,
-          longitude_min = 0.0, longitude_max = 0.0,
-          altitude_mean = 0.0, altitude_std = 0.0, altitude_med = 0.0,
-          altitude_min = 0.0, altitude_max = 0.0;
+    double latitude_mean = 0.0, latitude_std = 0.0, latitude_med = 0.0,
+           latitude_min = DBL_MAX, latitude_max = -DBL_MAX,
+           longitude_mean = 0.0, longitude_std = 0.0, longitude_med = 0.0,
+           longitude_min = DBL_MAX, longitude_max = -DBL_MAX,
+           altitude_mean = 0.0, altitude_std = 0.0, altitude_med = 0.0,
+           altitude_min = DBL_MAX, altitude_max = -DBL_MAX;
+
+    if ( num_g )
+       {
+       multimap<double, size_t> latitude_map, longitude_map, altitude_map;
+
+       for ( size_t i = 0; i < (size_t)num_g; i++ )
+           {
+           auto &gi = gi_c[i];
+
+           latitude_mean += gi.latitude;
+           latitude_map.insert({gi.latitude, i});
+           if ( latitude_min > gi.latitude ) latitude_min = gi.latitude;
+           if ( latitude_max < gi.latitude ) latitude_max = gi.latitude;
+
+           longitude_mean += gi.longitude;
+           longitude_map.insert({gi.longitude, i});
+           if ( longitude_min > gi.longitude ) longitude_min = gi.longitude;
+           if ( longitude_max < gi.longitude ) longitude_max = gi.longitude;
+
+           altitude_mean += gi.altitude;
+           altitude_map.insert({gi.altitude, i});
+           if ( altitude_min > gi.altitude ) altitude_min = gi.altitude;
+           if ( altitude_max < gi.altitude ) altitude_max = gi.altitude;
+           }
+
+       get_median(latitude_map, latitude_med);
+       get_median(longitude_map, longitude_med);
+       get_median(altitude_map, altitude_med);
+
+       time_ref_g = gi_c.back().utc_time;
+
+       latitude_mean /= num_g; longitude_mean /= num_g; altitude_mean /= num_g;
+
+       // - get standard deviations:
+       for ( size_t i = 0; i < (size_t)num_g; i++ )
+           {
+           auto &gi = gi_c[i];
+
+           latitude_std += (gi.latitude - latitude_mean) * (gi.latitude - latitude_mean);
+           longitude_std += (gi.longitude - longitude_mean) * (gi.longitude - longitude_mean);
+           altitude_std += (gi.altitude - altitude_mean) * (gi.altitude - altitude_mean);
+           }
+       double denom = double(num_g - 1);
+       if ( num_g < 2 ) denom = 1.0;
+       latitude_std = sqrt(latitude_std / denom);
+       longitude_std = sqrt(longitude_std / denom);
+       altitude_std = sqrt(altitude_std / denom);
+       }
 
     string cmd =
     "START TRANSACTION; SELECT insert_full_register('" +
@@ -239,11 +287,11 @@ void put_into_db( const std::string &uuid_string, const timeval &curr_time,
     (num_g != 0 ?
                 to_string( time_ref_g ) + "," +
                 to_string( num_g ) + "," +
-                to_string( latitute_mean ) + "::float8," +
-                to_string( latitute_std ) + "::float8," +
-                to_string( latitute_med ) + "::float8," +
-                to_string( latitute_min ) + "::float8," +
-                to_string( latitute_max ) + "::float8," +
+                to_string( latitude_mean ) + "::float8," +
+                to_string( latitude_std ) + "::float8," +
+                to_string( latitude_med ) + "::float8," +
+                to_string( latitude_min ) + "::float8," +
+                to_string( latitude_max ) + "::float8," +
                 to_string( longitude_mean ) + "::float8," +
                 to_string( longitude_std ) + "::float8," +
                 to_string( longitude_med ) + "::float8," +
@@ -273,7 +321,7 @@ void put_into_db( const std::string &uuid_string, const timeval &curr_time,
 
     ");COMMIT;";
 
-cerr << cmd << endl;
+    // DEBUG: cerr << cmd << endl;
 
     PGresult *insert_result = PQexec(conn, cmd.c_str());
     ExecStatusType status_insert = PQresultStatus(insert_result);

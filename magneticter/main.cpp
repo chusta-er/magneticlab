@@ -319,7 +319,7 @@ startup: // label to jump to, on SIGHUP or startup errors.
                   << "last system temp: " <<  mi.temp1_string() << "ºC " << endl
                   << "last gps time/date: " << asctime(gmtime(&gi.utc_time))
                   << fixed << setprecision(5)
-                  << "last gps lat, long, alt: " << gi.latitute << ", "
+                  << "last gps lat, long, alt: " << gi.latitude << ", "
                                                  << gi.longitude << ", "
                                                  << setprecision(1)
                                                  << gi.altitude << endl
@@ -343,13 +343,13 @@ startup: // label to jump to, on SIGHUP or startup errors.
        //   FORK_EXIT_CONDITION
        tm *curr_time_tm = gmtime(&curr_time.tv_sec);
 
-//       if ( ((curr_time_tm->tm_min % 15 == 0) &&
-//             (curr_time_tm->tm_sec == 0) &&
-//             (curr_time.tv_usec < 500000)) ||
-//            (curr_time.tv_sec - last_db_time.tv_sec >= 15 * 60) )
-       if ( ((curr_time_tm->tm_sec % 30 == 0) &&
+       if ( ((curr_time_tm->tm_min % 15 == 0) &&
+             (curr_time_tm->tm_sec == 0) &&
              (curr_time.tv_usec < 500000)) ||
-            (curr_time.tv_sec - last_db_time.tv_sec >= 30) )
+            (curr_time.tv_sec - last_db_time.tv_sec >= 15 * 60) )
+//       if ( ((curr_time_tm->tm_sec % 30 == 0) &&
+//             (curr_time.tv_usec < 500000)) ||
+//            (curr_time.tv_sec - last_db_time.tv_sec >= 30) )
           {
           double stat_lap_time = ((double)curr_time.tv_sec + (double)curr_time.tv_usec * 1.e-6) -
                                  ((double)last_db_time.tv_sec + (double)last_db_time.tv_usec * 1.e-6);
@@ -503,7 +503,7 @@ static void get_gps_db_info(gps_db_info_t &gi)
 
     typedef struct {int bookend1; gps_data_t gpsdata; int bookend2;} shmem_t;
 
-    shmem_t *mem = (shmem_t *)shmat(shmid, 0, 0);
+    shmem_t volatile *mem = (shmem_t volatile *)shmat(shmid, 0, 0);
 
     if ( (long)mem < 0 ) return;
 
@@ -534,7 +534,7 @@ static void get_gps_db_info(gps_db_info_t &gi)
        {
        gi.utc_time  = fix_time;
        gi.altitude  = fix_altitude;
-       gi.latitute  = fix_latitude;
+       gi.latitude  = fix_latitude;
        gi.longitude = fix_longitude;
        }
 
