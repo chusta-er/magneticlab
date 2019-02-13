@@ -232,3 +232,11 @@ $$
     END;
 $$
 LANGUAGE plpgsql;
+
+CREATE OR REPLACE VIEW web_magnetic_info
+AS
+SELECT t.sys_time_secs, ci.time_ref, m.b_mean, m.b_std, m.b_median, m.b_median_x, m.b_median_y, m.b_median_z, m.b_min, m.b_max
+FROM timing t INNER JOIN magnetic_info m ON t.time_id=m.time_id
+INNER JOIN chrony_info ci ON t.time_id=ci.time_id;
+
+GRANT SELECT ON web_magnetic_info TO "www-data";

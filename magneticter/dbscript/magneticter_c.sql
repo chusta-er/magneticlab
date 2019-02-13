@@ -23,4 +23,5 @@
 -- under, or should be configured to do so.
 
 CREATE USER magneticter;
+CREATE USER "www-data";
 CREATE DATABASE magneticter OWNER=magneticter;
