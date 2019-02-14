@@ -68,7 +68,7 @@
 			<envvars />
 			<debugger>
 				<remote_debugging>
-					<options conn_type="0" serial_baud="115200" ip_address="localhost" ip_port="9999" additional_cmds="# set follow-fork-mode child" />
+					<options conn_type="0" serial_baud="115200" ip_address="magneticlab.inta.es" ip_port="9999" additional_cmds="# set follow-fork-mode child" />
 				</remote_debugging>
 			</debugger>
 			<lib_finder disable_auto="1" />
