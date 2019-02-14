@@ -3,6 +3,7 @@
 
 const char * get_comm_device_name();
 int32_t      get_sensor_threshold();
+int          get_sample_period();
 int          get_log_level();
 
 bool load_config();

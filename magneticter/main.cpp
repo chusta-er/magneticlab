@@ -343,13 +343,10 @@ startup: // label to jump to, on SIGHUP or startup errors.
        //   FORK_EXIT_CONDITION
        tm *curr_time_tm = gmtime(&curr_time.tv_sec);
 
-       if ( ((curr_time_tm->tm_min % 15 == 0) &&
+       if ( ((curr_time_tm->tm_min % get_sample_period() == 0) &&
              (curr_time_tm->tm_sec == 0) &&
              (curr_time.tv_usec < 500000)) ||
-            (curr_time.tv_sec - last_db_time.tv_sec >= 15 * 60) )
-//       if ( ((curr_time_tm->tm_sec % 30 == 0) &&
-//             (curr_time.tv_usec < 500000)) ||
-//            (curr_time.tv_sec - last_db_time.tv_sec >= 30) )
+            (curr_time.tv_sec - last_db_time.tv_sec >= (get_sample_period() * 60)) )
           {
           double stat_lap_time = ((double)curr_time.tv_sec + (double)curr_time.tv_usec * 1.e-6) -
                                  ((double)last_db_time.tv_sec + (double)last_db_time.tv_usec * 1.e-6);
