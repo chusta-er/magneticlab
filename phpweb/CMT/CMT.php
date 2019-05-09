@@ -7,11 +7,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Laboratorio de Magnetismo Espacial</title>
 <script type="text/javascript" src="/sources/jscharts.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
 <link href="Menu.css" title="text/css" rel="stylesheet" />
 </head>
 <body>
 	<div id="contenedor" style="margin:20px 80px; background-color: #b3d9ff;">
-    <br />
+        <br />
 		<h1 align="center">LABORATORIO DE MAGNETISMO ESPACIAL&emsp;<a href="../Index.html"><img height="100" width="100" src="../Images/logo-inta.png" /></a></h1>
     	<br />
         <div class="navbar">
@@ -23,98 +24,93 @@
         <br />
         <br />
         <h2 style="margin:20px 80px">Campo Magnético Terrestre</h2>
-        <div id"descripcion" style="margin-left:90px; margin-right:90px">
+        <div id="descripcion" style="margin-left:90px; margin-right:90px">
     		<p align="left">Las medidas del campo magnético terrestre se realizan en el Laboratorio de Ensayos Magnéticos en tiempo real. Mediante un sensor, un circuito de adquisición y un ordenador que procesa los datos medidos y se presentan en una página web. Se miden los valores de campo magnético con referencia al norte geográfico (Bx,  By, Bz), además de su módulo y la declinación (ángulo entre el norte magnético y el norte geográfico). <!--La información puede consultarse en la siguiente dirección de internet: <a href="http://magneticlab.inta.es/">http://magneticlab.inta.es/</a>--></p>
         </div>
 		<br />
 		<br />
-		<div id="graph" align="center">Loading graph...</div>
-            <!--iframe src="../bfield.php" width="100%" frameborder=1 scrolling=yes></iframe-->
-<?php
-    //echo "<script type='text/javascript'>";
-    // Abrir fichero que contiene los datos
-    $dbconn = pg_connect("dbname=magneticter") or die("cannot connet to DB!");
-    //$arr2 = array();
-    //$j = 0;
-    //$i = 0;
-    //echo "var myData = new Array();";
+        <canvas id="chartjs-0" class="chartjs" width="770" height="385" style="display: block; width: 770px; height: 385px;" >Loading graph...</canvas>
+        <script type="text/javascript" >
+        <?php
+            // Abrir fichero que contiene los datos
+            $dbconn = pg_connect("dbname=magneticter") or die("cannot connet to DB!");
 
-    $result = pg_query($dbconn, "select * from web_magnetic_info;");
-    var_dump(pg_fetch_all($result));
-    pg_close($dbconn)
-/*
-    // Mientras no se llega al final del fichero
-    while (!feof($var))
-          {
-          // Dividir la cada línea del fichero en campos distintos y copiar los datos en un array
-          $cad = preg_split("/[\s,]+/", fgets($var));
-          // Si queda algún espacio en blanco (en este caso en el primero campo que es Bx), lo eliminamos para que solo queden los valores y lo introducimos en el array
-          $arr2[$j] = trim($cad[0]);
-          // Pasamos el número de dato y el valor del Bx al array que usa la librería JSChart para representar en la gráfica
-          echo "myData[$j] = [$j, $arr2[$j]];";
-          $j++;
-          }
-    // Se cierra el fichero
-    fclose($var);
-	
-    // Dibujamos el gráfico
+            $result = pg_query($dbconn, "select * from web_magnetic_info;");
+            $all_data = pg_fetch_all($result);
+            $numrows = count($all_data);
+            $txt_B = ""; $txt_Bx = ""; $txt_Bz = ""; $txt_Bz = "";
+            for ( $i = 0; $i < $numrows - 1; $i++ )
+                {
+                $txt_B .= "{$all_data[$i]["b_median"]},";
+                $txt_Bx .= "{$all_data[$i]["b_median_x"]},";
+                $txt_By .= "{$all_data[$i]["b_median_y"]},";
+                $txt_Bz .= "{$all_data[$i]["b_median_z"]},";
+                }
+            $txt_B .= "{$all_data[$i]["b_median"]}";
+            $txt_Bx .= "{$all_data[$i]["b_median_x"]}";
+            $txt_By .= "{$all_data[$i]["b_median_y"]}";
+            $txt_Bz .= "{$all_data[$i]["b_median_z"]}";
+            pg_close($dbconn);
 
-	echo "var myChart = new JSChart('graph', 'line');";
+            //echo "magnetic_data=[{$txt_data}];";
 
-	// Le añadimos los valores
-	echo "myChart.setDataArray(myData);";
-	// Le añadimos el título
-	echo "myChart.setTitle('Campo Magnetico Bx (nT)');";
-	// Ponemos el color del título
-	echo "myChart.setTitleColor('#0000ff');";
-	// Tamaño de la fuente
-	echo "myChart.setTitleFontSize(11);";
-	// Etiqueta del nombre del eje X e Y
-	echo "myChart.setAxisNameX('Tiempo (Horas)');";
-	echo "myChart.setAxisNameY('');";
-	// Ponemos los distintos colores para la gráfica
-	echo "myChart.setAxisColor('#0000ff');";
-	echo "myChart.setAxisValuesColor('#000000');";
-	// Introducimos los márgenes
-	echo "myChart.setAxisPaddingLeft(100);";
-	echo "myChart.setAxisPaddingRight(100);";
-	echo "myChart.setAxisPaddingTop(50);";
-	echo "myChart.setAxisPaddingBottom(40);";
-	// Ponemos cuantos decimales queremos ver en las etiquetas del eje Y
-	echo "myChart.setAxisValuesDecimals(0);";
-	// Ponemos cuantos valores se van a representar en el eje X (24 horas)
-	echo "myChart.setAxisValuesNumberX(24);";
-	echo "myChart.setShowXValues(false);";
-	echo "myChart.setGridColor('#000000');";
-	// Color de las líneas de fondo del gráfico
-	echo "myChart.setLineColor('#000000');";
-	// Ancho de las líneas
-	echo "myChart.setLineWidth(2);";
-	// Color de las etiquetas con valores en cada hora en punto (Descomentar en el while para usar)
-	echo "myChart.setFlagColor('#0080ff');";
-	// Forma de las etiquetas, en círculo (Descomentar en el while para usar)
-	echo "myChart.setFlagRadius(4);";
-	// Color de las etiquetas
-	echo "myChart.setLabelColor('#000000');";
-	$j = 0;
-	while($j < 24)
-	{
-		// Etiquetas del eje X, para que quede bien la escala debe tenerse en cuenta los datos que representa por hora con la variable i
-		echo "myChart.setLabelX([$i, '$j']);";
-		//echo "myChart.setTooltip([$i, 'Bx = $arr2[$i]']);"; //(Etiquetas con valores en cada hora)
-		$i = $i+2; //(Dependiendo el valor que le sumemos a i, será la escala para las etiquetas, el valor sumado será el número de datos que se representa por hora
-		$j++;
-	}
-	// Tamaño de la gráfica
-	echo "myChart.setSize(900, 400);";
-	// Añadir una imagen de fondo a la gráfica (Descomentar para activar)
-	//echo "myChart.setBackgroundImage('chart_bg.jpg');";
-	// Dibujar
-	echo "myChart.draw();";
-    echo "</script>";
-*/
-?>
-        <br />
+            $dbconn = pg_connect("dbname=magneticter") or die("cannot connet to DB!");
+        ?>
+
+            new Chart(
+               document.getElementById("chartjs-0"),
+               {
+               "type": "line",
+               "data":
+                   {
+                   "labels": ["00:00", "00:15", "00:30", "00:45", "01:00", "01:15", "01:30", "01:45", "02:00", "02:15", "02:30", "02:45",
+                              "03:00", "03:15", "03:30", "03:45", "04:00", "04:15", "04:30", "04:45", "05:00", "05:15", "05:30", "05:45",
+                              "06:00", "06:15", "06:30", "06:45", "07:00", "07:15", "07:30", "07:45", "08:00", "08:15", "08:30", "08:45",
+                              "09:00", "09:15", "09:30", "09:45", "10:00", "10:15", "10:30", "10:45", "11:00", "11:15", "11:30", "11:45",
+                              "12:00", "12:15", "12:30", "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45",
+                              "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15", "17:30", "17:45",
+                              "18:00", "18:15", "18:30", "18:45", "19:00", "19:15", "19:30", "19:45", "20:00", "20:15", "20:30", "20:45",
+                              "21:00", "21:15", "21:30", "21:45", "22:00", "22:15", "22:30", "22:45", "23:00", "23:15", "23:30", "23:45", "24:00"],
+                   "datasets":
+                      [
+                         {
+                         "label": "|B| median",
+                         "data": [<?php echo "{$txt_B}" ?>],
+                         "fill": false,
+                         "borderColor": "rgb(192, 192, 192)",
+                         "lineTension": 0,
+                         "showLines": false
+                         },
+                         {
+                         "label": "B median, x",
+                         "data": [<?php echo "{$txt_Bx}" ?>],
+                         "fill": false,
+                         "borderColor": "rgb(75, 192, 192)",
+                         "lineTension": 0,
+                         "showLines": false
+                         },
+                         {
+                         "label": "B median, y",
+                         "data": [<?php echo "{$txt_By}" ?>],
+                         "fill": false,
+                         "borderColor": "rgb(192, 75, 192)",
+                         "lineTension": 0,
+                         "showLines": false
+                         },
+                         {
+                         "label": "B median, z",
+                         "data": [<?php echo "{$txt_Bz}" ?>],
+                         "fill": false,
+                         "borderColor": "rgb(192, 192, 75)",
+                         "lineTension": 0,
+                         "showLines": false
+                         }
+                      ]
+                   },
+               "options": {}
+               }
+            );
+        </script>
     </div>
 </body>
 </html>
