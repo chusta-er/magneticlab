@@ -23,5 +23,8 @@
 -- under, or should be configured to do so.
 
 CREATE USER magneticter;
-CREATE USER "www-data";
 CREATE DATABASE magneticter OWNER=magneticter;
+CREATE USER magneticlab;
+CREATE DATABASE magneticlab OWNER=magneticlab;
+CREATE USER "www-data";
+CREATE USER grafana WITH PASSWORD '0.gr.f.n.0'

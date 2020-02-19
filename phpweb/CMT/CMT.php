@@ -6,14 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Laboratorio de Magnetismo Espacial</title>
-<script type="text/javascript" src="/sources/jscharts.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+<!--script type="text/javascript" src="/sources/jscharts.js"></script -->
+<!--script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script -->
 <link href="Menu.css" title="text/css" rel="stylesheet" />
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> 
 </head>
 <body>
 	<div id="contenedor" style="margin:20px 80px; background-color: #b3d9ff;">
         <br />
-		<h1 align="center">LABORATORIO DE MAGNETISMO ESPACIAL&emsp;<a href="../Index.html"><img height="100" width="100" src="../Images/logo-inta.png" /></a></h1>
+		<h1 align="center">LABORATORIO DE MAGNETISMO ESPACIAL&emsp;<a href="/"><img height="100" width="100" src="../Images/logo-inta.png" /></a></h1>
     	<br />
         <div class="navbar">
 			<a class="active">Campo Magnético Terrestre</a>
@@ -28,11 +29,15 @@
     		<p align="left">Las medidas del campo magnético terrestre se realizan en el Laboratorio de Ensayos Magnéticos en tiempo real. Mediante un sensor, un circuito de adquisición y un ordenador que procesa los datos medidos y se presentan en una página web. Se miden los valores de campo magnético con referencia al norte geográfico (Bx,  By, Bz), además de su módulo y la declinación (ángulo entre el norte magnético y el norte geográfico). <!--La información puede consultarse en la siguiente dirección de internet: <a href="http://magneticlab.inta.es/">http://magneticlab.inta.es/</a>--></p>
         </div>
 		<br />
+        <div class="w3-container w3-center">
+            <div class="w3-panel w3-sand w3-center w3-round-xlarge">
+                <p><a href="/grafana"><input type="button" value="Visualizar datos magnéticos"/></a></p>
+            </div>
+        </div>
 		<br />
-        <canvas id="chartjs-0" class="chartjs" width="770" height="385" style="display: block; width: 770px; height: 385px;" >Loading graph...</canvas>
+        <!--canvas id="chartjs-0" class="chartjs" width="770" height="385" style="display: block; width: 770px; height: 385px;" >Loading graph...</canvas -->
         <script type="text/javascript" >
-        <?php
-            // Abrir fichero que contiene los datos
+        <!-- ?php
             $dbconn = pg_connect("dbname=magneticter") or die("cannot connet to DB!");
 
             $result = pg_query($dbconn, "select * from web_magnetic_info;");
@@ -55,8 +60,8 @@
             //echo "magnetic_data=[{$txt_data}];";
 
             $dbconn = pg_connect("dbname=magneticter") or die("cannot connet to DB!");
-        ?>
-
+        ? -->
+        <!--
             new Chart(
                document.getElementById("chartjs-0"),
                {
@@ -110,6 +115,7 @@
                "options": {}
                }
             );
+        -->
         </script>
     </div>
 </body>

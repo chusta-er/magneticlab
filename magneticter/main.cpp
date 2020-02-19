@@ -246,7 +246,7 @@ startup: // label to jump to, on SIGHUP or startup errors.
           // Value returned by process_rx_data informs weather mi has been set.
           if ( process_rx_data(mi) )
              {
-              // add data to stats (one frame):
+             // add data to stats (one frame):
              update_rx_statistics(0, 1);
              // ... (append to vector)
              mi_c.push_back((const magnetic_info_t &)mi);
@@ -266,7 +266,7 @@ startup: // label to jump to, on SIGHUP or startup errors.
        gps_db_info_t    gi_aux;     // (def. constructor)
        chrony_db_info_t ci_aux; // (def. constructor)
 
-       // Save the gps sample only if it is not zero and newer from previous one:
+       // Save the gps sample only if it is not zero and newer than previous one:
        get_gps_db_info(gi_aux);
        if ( gi_aux.utc_time && gi_aux.utc_time > gi.utc_time )
           {
@@ -281,7 +281,7 @@ startup: // label to jump to, on SIGHUP or startup errors.
           sleep(5);
           goto cleanup;
           }
-       // Save the chrony sample only if it is not zero and newer from previous one:
+       // Save the chrony sample only if it is not zero and newer than previous one:
        if ( ci_aux.ref_time_utc && ci_aux.stratum == 1 && ci_aux.ref_time_utc > ci.ref_time_utc )
           ci = ci_aux;
 

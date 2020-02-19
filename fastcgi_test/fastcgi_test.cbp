@@ -2,25 +2,24 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="magneticter" />
+		<Option title="fastcgi_test" />
 		<Option pch_mode="2" />
 		<Option compiler="arm-elf-gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/magneticter" prefix_auto="1" extension_auto="0" />
-				<Option working_dir="bin/Debug" />
+				<Option output="bin/Debug/fastcgi_test" prefix_auto="1" extension_auto="0" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="arm-elf-gcc" />
-				<Option use_console_runner="0" />
 				<Compiler>
-					<Add option="-std=c++14" />
 					<Add option="-g" />
-					<Add option="-Wno-psabi" />
 				</Compiler>
+				<Linker>
+					<Add library="pthread" />
+				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/magneticter" prefix_auto="1" extension_auto="0" />
+				<Option output="bin/Release/fastcgi_test" prefix_auto="1" extension_auto="0" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="arm-elf-gcc" />
@@ -29,17 +28,15 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="pthread" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-fexceptions" />
 		</Compiler>
 		<Linker>
-			<Add library="gps" />
-			<Add library="uuid" />
-			<Add library="pq" />
+			<Add library="pthread" />
 		</Linker>
 		<ExtraCommands>
 			<Add after='C:\cygwin64\bin\ssh tesla@magneticlab &quot;echo \(ga166\)|sudo -S rm -f $(TARGET_OUTPUT_BASENAME)&quot;' />
@@ -48,30 +45,17 @@
 			<Add after='C:\cygwin64\bin\ssh tesla@magneticlab &quot;echo \(ga166\)|sudo -S chmod a+s ~/$(TARGET_OUTPUT_BASENAME)&quot;' />
 			<Add after='C:\cygwin64\bin\ssh tesla@magneticlab &quot;echo \(ga166\)|sudo -S chmod a+x ~/$(TARGET_OUTPUT_BASENAME)&quot;' />
 		</ExtraCommands>
-		<Unit filename="candm.h" />
-		<Unit filename="config.cpp" />
-		<Unit filename="config.h">
-			<Option target="&lt;{~None~}&gt;" />
+		<Unit filename="fastcgi/fcgiapp.c">
+			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="dbsave.cpp" />
-		<Unit filename="dbsave.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="magnetometer_info.cpp" />
-		<Unit filename="magnetometer_info.h">
-			<Option target="&lt;{~None~}&gt;" />
+		<Unit filename="fastcgi/os_unix.c">
+			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="main.cpp" />
-		<Unit filename="pch.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
-			<debugger>
-				<remote_debugging>
-					<options conn_type="0" serial_baud="115200" ip_address="localhost" ip_port="9999" additional_cmds="# set follow-fork-mode child" />
-				</remote_debugging>
-			</debugger>
-			<lib_finder disable_auto="1" />
+			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
