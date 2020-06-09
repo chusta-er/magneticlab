@@ -160,7 +160,7 @@ startup: // label to jump to, on SIGHUP or startup errors.
        }
 
     // ----------------------------------------------
-    // Initialise the socket used to talk to chronyd
+    // Initialize the socket used to talk to chronyd
     // ----------------------------------------------
 
     if ( (sock_fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 )

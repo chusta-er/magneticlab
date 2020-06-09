@@ -26,6 +26,7 @@
 				<Option compiler="arm-elf-gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++14" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -48,7 +49,9 @@
 			<Add after='C:\cygwin64\bin\ssh tesla@magneticlab &quot;echo \(ga166\)|sudo -S chmod a+s ~/$(TARGET_OUTPUT_BASENAME)&quot;' />
 			<Add after='C:\cygwin64\bin\ssh tesla@magneticlab &quot;echo \(ga166\)|sudo -S chmod a+x ~/$(TARGET_OUTPUT_BASENAME)&quot;' />
 		</ExtraCommands>
-		<Unit filename="candm.h" />
+		<Unit filename="candm.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="config.cpp" />
 		<Unit filename="config.h">
 			<Option target="&lt;{~None~}&gt;" />
